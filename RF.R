@@ -68,9 +68,9 @@ dta_bothacc2 <- rbind(dta_bothacc_kyu,dta_bothacc_dan)
 
 
 meanrst_boot <- list()
-meanrst_boot$train <- matrix(NA,100,2)
-meanrst_boot$test <- matrix(NA,100,2)
-for (t in 1:100){
+meanrst_boot$train <- matrix(NA,10000,2)
+meanrst_boot$test <- matrix(NA,10000,2)
+for (t in 1:10000){
   print(t)
   # Bootstrapping
   d <- dta_bothacc_dan[sample(nrow(dta_bothacc_dan),replace = T),]
@@ -120,5 +120,8 @@ for (t in 1:100){
   meanrst_boot$test[t,2] <- mean(rst_boot$test[,2])
 }
 
+saveRDS(meanrst_boot,file = "RF_Boot_10000.Rdata")
+
 quantile(meanrst_boot$test[,1],c(.025,.975))
 quantile(meanrst_boot$test[,2],c(.025,.975))
+
