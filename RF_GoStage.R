@@ -39,7 +39,7 @@ for(i in 1:8){
   rst_forests <- randomForest(GoStage~., data = trainData,
                               mtry = 7, 
                               ntree = 1000, 
-                              nodesize = 5,
+                              nodesize = 4,
                               importance = T)
   y_train_prob_tree <- predict(rst_forests,trainData,type="prob")[,2]
   y_train_hat <- predict(rst_forests,trainData,type="response")
@@ -81,7 +81,7 @@ for (t in 1:10000){
     rst_forests <- randomForest(GoStage~., data = trainData,
                                 mtry = 7, 
                                 ntree = 1000, 
-                                nodesize = 5,
+                                nodesize = 4,
                                 importance = T)
     y_train_prob_tree <- predict(rst_forests,trainData,type="prob")[,2]
     y_train_hat <- predict(rst_forests,trainData,type="response")

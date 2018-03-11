@@ -9,7 +9,7 @@ theme_default <- function(base_size = 12, base_family = ""){
     theme( strip.background = element_blank()
     )
 }
-meanrst_boot <- readRDS("../GoCogdata/GoStage_RF_Boot_1000.Rdata")
+meanrst_boot <- readRDS("../GoCogdata/GoStage_RF_Boot_10000.Rdata")
 dattest <- as.data.frame(meanrst_boot$test)
 colnames(dattest) <- c("CE")
 head(dattest)
