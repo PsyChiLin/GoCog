@@ -9,9 +9,9 @@ theme_default <- function(base_size = 12, base_family = ""){
     theme( strip.background = element_blank()
     )
 }
-meanrst_boot <- readRDS("../GoCogdata/DanKyu_RF_Boot_10000.Rdata")
+meanrst_boot <- readRDS("../GoCogdata/GoStage_RF_Boot_1000.Rdata")
 dattest <- as.data.frame(meanrst_boot$test)
-colnames(dattest) <- c("CE","AUC")
+colnames(dattest) <- c("CE")
 head(dattest)
 
 ggplot(data = dattest,aes(x = CE))+  
@@ -38,26 +38,3 @@ ggplot(data = dattest,aes(x = CE))+
   theme_default()+
   theme(plot.title = element_text(hjust = 0.5))
 
-ggplot(data = dattest,aes(x = AUC))+  
-  #geom_histogram(aes(y = ..density..),
-  #               binwidth = 0.01,
-  #               center = 5,
-  #               color="darkblue", 
-  #               fill="#6699FF",alpha = 0.5)+
-  geom_density(alpha=.2, fill="#FF6666")+
-  geom_vline(aes(xintercept=mean(AUC)),
-             color="#FF6699", linetype="dashed", size=1)+
-  geom_vline(aes(xintercept=quantile(meanrst_boot$test[,2],c(.025,.975))[1]),
-             color="#FF6699", linetype="dashed", size=1)+
-  geom_vline(aes(xintercept=quantile(meanrst_boot$test[,2],c(.025,.975))[2]),
-             color="#FF6699", linetype="dashed", size=1)+
-  ggtitle(paste0("Mean CE = ",round(mean(dattest$AUC),3),
-                 " (",
-                 round(quantile(meanrst_boot$test[,2],c(.025,.975))[1],3),
-                 " ~ ",
-                 round(quantile(meanrst_boot$test[,2],c(.025,.975))[2],3),
-                 ")"))+
-  ylab("Density")+
-  xlab("AUC")+
-  theme_default()+
-  theme(plot.title = element_text(hjust = 0.5))
