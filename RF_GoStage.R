@@ -4,7 +4,6 @@ library(reshape2)
 library(e1071)
 library(pROC)
 
-
 dta = read.csv("../GoCogdata/GoCog.csv")
 head(dta)
 
@@ -111,10 +110,7 @@ quantile(meanrst_boot$test[,2],c(.025,.975),na.rm = T)
 quantile(meanrst_boot$test[,3],c(.025,.975),na.rm = T) 
 quantile(meanrst_boot$test[,4],c(.025,.975),na.rm = T) 
 
-
-saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_RF_Boot_10000.Rdata")
-
-
+#saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_BothACC_RF_10000_Ex.Rdata")
 
 
 
