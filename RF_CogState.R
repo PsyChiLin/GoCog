@@ -8,17 +8,15 @@ library(pROC)
 dta = read.csv("../GoCogdata/GoCog.csv")
 head(dta)
 
-dta_bothacc <- dcast(dta,Subj+Age+SubjGroup+GoStage~CogTask,
+dta_bothacc <- dcast(dta,Subj+Age+SubjGroup+CogTask~GoStage,
                      value.var = "Both_ACC")
-colnames(dta_bothacc)[5:8] <- c("Calc_Both_ACC","None_Both_ACC",
-                                "Reas_Both_ACC","Spat_Both_ACC")
-dta_bothrt <- dcast(dta,Subj+Age+SubjGroup+GoStage~CogTask,
+colnames(dta_bothacc)[5:7] <- c("End_Both_ACC","Mid_Both_ACC","Open_Both_ACC")
+dta_bothrt <- dcast(dta,Subj+Age+SubjGroup+CogTask~GoStage,
                      value.var = "Both_RT")
-colnames(dta_bothrt)[5:8] <- c("Calc_Both_RT","None_Both_RT",
-                                "Reas_Both_RT","Spat_Both_RT")
-dta_3s <- full_join(dta_bothacc,dta_bothrt)
-dta_3s$Subj <- as.factor(dta_3s$Subj)
-
+colnames(dta_bothrt)[5:7] <- c("End_Both_RT","Mid_Both_RT","Open_Both_RT")
+dta_4c <- full_join(dta_bothacc,dta_bothrt)
+dta_4c$Subj <- as.factor(dta_4c$Subj)
+head(dta_4c)
 ############## Bootstrapping ############
 
 set.seed(1)
@@ -92,7 +90,7 @@ for (t in 1:10000){
     ce_test <- mean(y_test_hat != End_test$GoStage)
     rst_boot$train[i,4] <- ce_train # 4 column : all, open, mid, end
     rst_boot$test[i,4] <- ce_test   # 4 column : all, open, mid, end
-  
+    
   }
   # 4 column : all, open, mid, end
   meanrst_boot$train[t,1] <- mean(rst_boot$train[,1])
@@ -114,7 +112,7 @@ quantile(meanrst_boot$test[,4],c(.025,.975),na.rm = T)
 
 saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_RF_Boot_10000.Rdata")
 
-# Given different Dan Kyu ?
+
 
 
 

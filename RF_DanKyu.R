@@ -8,7 +8,7 @@ library(pROC)
 dta = read.csv("../GoCogdata/GoCog.csv")
 head(dta)
 str(dta)
-############## Bootstrapping # Under sampling############
+############## Bootstrapping Under sampling############
 
 dta_bothacc <- dcast(dta,Subj+Age+SubjGroup~GoStage+CogTask,
                      value.var = "Both_ACC")
