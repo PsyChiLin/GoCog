@@ -51,7 +51,7 @@ ggplot(data = dattest,aes(x = AUC))+
              color="#FF6699", linetype="dashed", size=1)+
   geom_vline(aes(xintercept=quantile(meanrst_boot$test[,2],c(.025,.975))[2]),
              color="#FF6699", linetype="dashed", size=1)+
-  ggtitle(paste0("Mean CE = ",round(mean(dattest$AUC),3),
+  ggtitle(paste0("Mean AUC = ",round(mean(dattest$AUC),3),
                  " (",
                  round(quantile(meanrst_boot$test[,2],c(.025,.975))[1],3),
                  " ~ ",
