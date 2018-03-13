@@ -114,7 +114,6 @@ quantile(meanrst_boot$test[,4],c(.025,.975),na.rm = T)
 
 saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_RF_Boot_10000.Rdata")
 
-# Given different Dan Kyu ?
 
 
 
