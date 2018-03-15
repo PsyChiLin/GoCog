@@ -4,7 +4,7 @@ library(reshape2)
 library(e1071)
 library(pROC)
 
-
+rm(list = ls())
 dta = read.csv("../GoCogdata/GoCog.csv")
 head(dta)
 

@@ -4,6 +4,7 @@ library(reshape2)
 library(e1071)
 library(pROC)
 
+rm(list = ls())
 dta = read.csv("../GoCogdata/GoCog.csv")
 head(dta)
 
@@ -31,9 +32,9 @@ meanrst_boot$test <- matrix(NA,10000,4)  # 4 column : all, open, mid, end
 for (t in 1:10000){
   print(t)
   # Bootstrapping
-  dta_3s_dan_boot <- dta_3s_dan[sample(nrow(dta_3s_dan),replace = T),]
+  dta_3s_kyu_boot <- dta_3s_kyu[sample(nrow(dta_3s_kyu),replace = T),]
   #folds <- rep(rep(sample(1:8),each = 3),3)
-  folds <- sample(rep(rep(sample(1:8),3),3))
+  folds <- sample(rep(rep(sample(1:8),3),2))
   
   rst_boot <- list()
   rst_boot$train <- matrix(NA,8,4) # 4 column : all, open, mid, end
@@ -41,8 +42,8 @@ for (t in 1:10000){
   
   for(i in 1:8){
     testIndexes <- which(folds==i,arr.ind=TRUE)
-    testData <- dta_3s_dan_boot[testIndexes, c(4:12)]
-    trainData <- dta_3s_dan_boot[-testIndexes, c(4:12)]
+    testData <- dta_3s_kyu_boot[testIndexes, c(4:12)]
+    trainData <- dta_3s_kyu_boot[-testIndexes, c(4:12)]
     rst_forests <- randomForest(GoStage~., data = trainData,
                                 mtry = 8, 
                                 ntree = 1000, 
@@ -112,18 +113,4 @@ quantile(meanrst_boot$test[,2],c(.025,.975),na.rm = T)
 quantile(meanrst_boot$test[,3],c(.025,.975),na.rm = T) 
 quantile(meanrst_boot$test[,4],c(.025,.975),na.rm = T) 
 
-#saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_BothACC_RF_10000_Ex.Rdata")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_BothACC_RF_10000_Ex_Kyu.Rdata")

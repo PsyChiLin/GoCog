@@ -3,6 +3,7 @@ library(dplyr)
 library(reshape2)
 library(e1071)
 library(pROC)
+
 rm(list = ls())
 dta = read.csv("../GoCogdata/GoCog.csv")
 head(dta)
@@ -12,46 +13,37 @@ dta_bothacc <- dcast(dta,Subj+Age+SubjGroup+GoStage~CogTask,
 colnames(dta_bothacc)[5:8] <- c("Calc_Both_ACC","None_Both_ACC",
                                 "Reas_Both_ACC","Spat_Both_ACC")
 dta_bothrt <- dcast(dta,Subj+Age+SubjGroup+GoStage~CogTask,
-                     value.var = "Both_RT")
+                    value.var = "Both_RT")
 colnames(dta_bothrt)[5:8] <- c("Calc_Both_RT","None_Both_RT",
-                                "Reas_Both_RT","Spat_Both_RT")
+                               "Reas_Both_RT","Spat_Both_RT")
 dta_3s <- full_join(dta_bothacc,dta_bothrt)
 dta_3s$Subj <- as.factor(dta_3s$Subj)
+dta_3s_dan <- filter(dta_3s, SubjGroup == "Dan")
+dta_3s_kyu <- filter(dta_3s, SubjGroup == "Kyu")
 
-############## Bootstrapping ############
+############## Bootstrapping : Dan ############
+
+set.seed(1)
 meanrst_boot <- list()
 meanrst_boot$train <- matrix(NA,10000,4) # 4 column : all, open, mid, end
 meanrst_boot$test <- matrix(NA,10000,4)  # 4 column : all, open, mid, end
 
+
 for (t in 1:10000){
   print(t)
-  set.seed(t)
-  # equally sampling
-  dta_3s_Open <- filter(dta_3s, GoStage == "Open")
-  dta_3s_Mid <- filter(dta_3s, GoStage == "Mid")
-  dta_3s_End <- filter(dta_3s, GoStage == "End")
   # Bootstrapping
-  dta_3s_Open_boot <- dta_3s_Open[sample(nrow(dta_3s_Open),replace = T),]
-  dta_3s_Mid_boot  <- dta_3s_Mid[sample(nrow(dta_3s_Mid),replace = T),]
-  dta_3s_End_boot  <- dta_3s_End[sample(nrow(dta_3s_End),replace = T),]
-  # random order
-  dta_3s_Open_boot <- dta_3s_Open_boot[sample(nrow(dta_3s_Open_boot)),]
-  dta_3s_Mid_boot  <- dta_3s_Mid_boot[sample(nrow(dta_3s_Mid_boot)),]
-  dta_3s_End_boot <- dta_3s_End_boot[sample(nrow(dta_3s_End_boot)),]
-  # bind data
-  dta_3s_boot <- rbind(dta_3s_Open_boot,dta_3s_Mid_boot,dta_3s_End_boot)
-  # 8 folds
-  folds <- c(1:24,1:24,1:24)
-  # 4 columns : all, open, mid, end
+  dta_3s_dan_boot <- dta_3s_dan[sample(nrow(dta_3s_dan),replace = T),]
+  #folds <- rep(rep(sample(1:8),each = 3),3)
+  folds <- sample(rep(rep(sample(1:8),3),2))
+  
   rst_boot <- list()
   rst_boot$train <- matrix(NA,8,4) # 4 column : all, open, mid, end
   rst_boot$test <- matrix(NA,8,4)  # 4 column : all, open, mid, end
   
   for(i in 1:8){
-    # Use dta_3s_boot
     testIndexes <- which(folds==i,arr.ind=TRUE)
-    testData <- dta_3s_boot[testIndexes, c(4:12)]
-    trainData <- dta_3s_boot[-testIndexes, c(4:12)]
+    testData <- dta_3s_dan_boot[testIndexes, c(4:12)]
+    trainData <- dta_3s_dan_boot[-testIndexes, c(4:12)]
     rst_forests <- randomForest(GoStage~., data = trainData,
                                 mtry = 8, 
                                 ntree = 1000, 
@@ -63,9 +55,12 @@ for (t in 1:10000){
     y_test_hat <- predict(rst_forests,testData,type="response")
     ce_train <- mean(y_train_hat!=trainData$GoStage, na.rm = T)
     ce_test <- mean(y_test_hat!=testData$GoStage, na.rm = T)
-
+    #auc_train <- pROC::auc(trainData$GoStage, y_train_prob_tree)
+    #auc_test <- pROC::auc(testData$GoStage, y_test_prob_tree) 
     rst_boot$train[i,1] <- ce_train 
     rst_boot$test[i,1] <- ce_test
+    #rst_boot$train[i,2] <-auc_train
+    #rst_boot$test[i,2] <- auc_test
     
     Open_train <- filter(trainData, GoStage == "Open")
     Open_test <- filter(testData, GoStage == "Open")
@@ -99,7 +94,7 @@ for (t in 1:10000){
     ce_test <- mean(y_test_hat != End_test$GoStage)
     rst_boot$train[i,4] <- ce_train # 4 column : all, open, mid, end
     rst_boot$test[i,4] <- ce_test   # 4 column : all, open, mid, end
-  
+    
   }
   # 4 column : all, open, mid, end
   meanrst_boot$train[t,1] <- mean(rst_boot$train[,1])
@@ -118,4 +113,18 @@ quantile(meanrst_boot$test[,2],c(.025,.975),na.rm = T)
 quantile(meanrst_boot$test[,3],c(.025,.975),na.rm = T) 
 quantile(meanrst_boot$test[,4],c(.025,.975),na.rm = T) 
 
-saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_BothACC_RF_10000_Ex.Rdata")
+saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_BothACC_RF_10000_Ex_Dan.Rdata")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
