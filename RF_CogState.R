@@ -19,28 +19,45 @@ dta_4c$Subj <- as.factor(dta_4c$Subj)
 head(dta_4c)
 ############## Bootstrapping ############
 
-set.seed(1)
+
 meanrst_boot <- list()
 meanrst_boot$train <- matrix(NA,10000,5) # 5 column : all, None
 meanrst_boot$test <- matrix(NA,10000,5)  # 4 column : all, open, mid, end
 
 
-for (t in 1:10000){
+for (t in 1:10){
   print(t)
+  set.seed(t)
+  # equally sampling
+  dta_4c_Calc <- filter(dta_4c, CogTask == "Calc")
+  dta_4c_Reas <- filter(dta_4c, CogTask == "Reas")
+  dta_4c_Spat <- filter(dta_4c, CogTask == "Spat")
+  dta_4c_None <- filter(dta_4c, CogTask == "None")
   # Bootstrapping
-  dta_4c_boot <- dta_4c[sample(nrow(dta_4c),replace = T),]
-  #folds <- rep(rep(sample(1:8),each = 3),3)
-  folds <- sample(rep(rep(sample(1:8),3),3))
-  
+  dta_4c_Calc_boot <- dta_4c_Calc[sample(nrow(dta_4c_Calc),replace = T),]
+  dta_4c_Reas_boot  <- dta_4c_Reas[sample(nrow(dta_4c_Reas),replace = T),]
+  dta_4c_Spat_boot  <- dta_4c_Spat[sample(nrow(dta_4c_Spat),replace = T),]
+  dta_4c_None_boot  <- dta_4c_None[sample(nrow(dta_4c_None),replace = T),]
+  # random order
+  dta_4c_Calc_boot <- dta_4c_Calc_boot[sample(nrow(dta_4c_Calc_boot)),]
+  dta_4c_Reas_boot  <- dta_4c_Reas_boot[sample(nrow(dta_4c_Reas_boot)),]
+  dta_4c_Spat_boot <- dta_4c_Spat_boot[sample(nrow(dta_4c_Spat_boot)),]
+  dta_4c_None_boot <- dta_4c_None_boot[sample(nrow(dta_4c_None_boot)),]
+  # bind data
+  dta_4c_boot <- rbind(dta_4c_Calc_boot,dta_4c_Reas_boot,dta_4c_Spat_boot,dta_4c_None_boot)
+  # 8 folds
+  folds <- c(1:24,1:24,1:24,1:24)
+
+  # 5 column : all, Calc, Reas, Spat, None
   rst_boot <- list()
-  rst_boot$train <- matrix(NA,8,5) # 4 column : all, open, mid, end
-  rst_boot$test <- matrix(NA,8,5)  # 4 column : all, open, mid, end
+  rst_boot$train <- matrix(NA,8,5)
+  rst_boot$test <- matrix(NA,8,5)
   
   for(i in 1:8){
     testIndexes <- which(folds==i,arr.ind=TRUE)
-    testData <- dta_4c[testIndexes, c(4:10)]
-    trainData <- dta_4c[-testIndexes, c(4:10)]
-    rst_forests <- randomForest(GoStage~., data = trainData,
+    testData <- dta_4c_boot[testIndexes, c(4:10)]
+    trainData <- dta_4c_boot[-testIndexes, c(4:10)]
+    rst_forests <- randomForest(CogTask~., data = trainData,
                                 mtry = 8, 
                                 ntree = 1000, 
                                 nodesize = 4,
@@ -49,50 +66,62 @@ for (t in 1:10000){
     y_train_hat <- predict(rst_forests,trainData,type="response")
     y_test_prob_tree <- predict(rst_forests,testData ,type="prob")[,2]
     y_test_hat <- predict(rst_forests,testData,type="response")
-    ce_train <- mean(y_train_hat!=trainData$GoStage, na.rm = T)
-    ce_test <- mean(y_test_hat!=testData$GoStage, na.rm = T)
-    #auc_train <- pROC::auc(trainData$GoStage, y_train_prob_tree)
-    #auc_test <- pROC::auc(testData$GoStage, y_test_prob_tree) 
+    ce_train <- mean(y_train_hat!=trainData$CogTask, na.rm = T)
+    ce_test <- mean(y_test_hat!=testData$CogTask, na.rm = T)
+
     rst_boot$train[i,1] <- ce_train 
     rst_boot$test[i,1] <- ce_test
-    #rst_boot$train[i,2] <-auc_train
-    #rst_boot$test[i,2] <- auc_test
     
-    Open_train <- filter(trainData, GoStage == "Open")
-    Open_test <- filter(testData, GoStage == "Open")
-    y_train_prob_tree <- predict(rst_forests,Open_train,type="prob")[,2]
-    y_train_hat <- predict(rst_forests,Open_train,type="response")
-    y_test_prob_tree <- predict(rst_forests,Open_test ,type="prob")[,2]
-    y_test_hat <- predict(rst_forests,Open_test,type="response")
-    ce_train <- mean(y_train_hat!=Open_train$GoStage)
-    ce_test <- mean(y_test_hat!=Open_test$GoStage)
-    rst_boot$train[i,2] <- ce_train # 4 column : all, open, mid, end
-    rst_boot$test[i,2] <- ce_test   # 4 column : all, open, mid, end
+    Calc_train <- filter(trainData, CogTask == "Calc")
+    Calc_test <- filter(testData, CogTask == "Calc")
+    y_train_prob_tree <- predict(rst_forests,Calc_train,type="prob")[,2]
+    y_train_hat <- predict(rst_forests,Calc_train,type="response")
+    y_test_prob_tree <- predict(rst_forests,Calc_test ,type="prob")[,2]
+    y_test_hat <- predict(rst_forests,Calc_test,type="response")
+    ce_train <- mean(y_train_hat!=Calc_train$CogTask)
+    ce_test <- mean(y_test_hat!=Calc_test$CogTask)
+    # 5 column : all, Calc, Reas, Spat, None
+    rst_boot$train[i,2] <- ce_train
+    rst_boot$test[i,2] <- ce_test
     
-    Mid_train <- filter(trainData, GoStage == "Mid")
-    Mid_test <- filter(testData, GoStage == "Mid")
-    y_train_prob_tree <- predict(rst_forests,Mid_train,type="prob")[,2]
-    y_train_hat <- predict(rst_forests,Mid_train,type="response")
-    y_test_prob_tree <- predict(rst_forests,Mid_test,type="prob")[,2]
-    y_test_hat <- predict(rst_forests,Mid_test,type="response")
-    ce_train <- mean(y_train_hat != Mid_train $GoStage)
-    ce_test <- mean(y_test_hat != Mid_test$GoStage)
-    rst_boot$train[i,3] <- ce_train # 4 column : all, open, mid, end
-    rst_boot$test[i,3] <- ce_test   # 4 column : all, open, mid, end
+    Reas_train <- filter(trainData, CogTask == "Reas")
+    Reas_test <- filter(testData, CogTask == "Reas")
+    y_train_prob_tree <- predict(rst_forests,Reas_train,type="prob")[,2]
+    y_train_hat <- predict(rst_forests,Reas_train,type="response")
+    y_test_prob_tree <- predict(rst_forests,Reas_test,type="prob")[,2]
+    y_test_hat <- predict(rst_forests,Reas_test,type="response")
+    ce_train <- mean(y_train_hat != Reas_train $CogTask)
+    ce_test <- mean(y_test_hat != Reas_test$CogTask)
+    # 5 column : all, Calc, Reas, Spat, None
+    rst_boot$train[i,3] <- ce_train
+    rst_boot$test[i,3] <- ce_test
     
-    End_train <- filter(trainData, GoStage == "End")
-    End_test <- filter(testData, GoStage == "End")
-    y_train_prob_tree <- predict(rst_forests,End_train,type="prob")[,2]
-    y_train_hat <- predict(rst_forests,End_train,type="response")
-    y_test_prob_tree <- predict(rst_forests,End_test,type="prob")[,2]
-    y_test_hat <- predict(rst_forests,End_test,type="response")
-    ce_train <- mean(y_train_hat != End_train $GoStage)
-    ce_test <- mean(y_test_hat != End_test$GoStage)
-    rst_boot$train[i,4] <- ce_train # 4 column : all, open, mid, end
-    rst_boot$test[i,4] <- ce_test   # 4 column : all, open, mid, end
+    Spat_train <- filter(trainData, CogTask == "Spat")
+    Spat_test <- filter(testData, CogTask == "Spat")
+    y_train_prob_tree <- predict(rst_forests,Spat_train,type="prob")[,2]
+    y_train_hat <- predict(rst_forests,Spat_train,type="response")
+    y_test_prob_tree <- predict(rst_forests,Spat_test,type="prob")[,2]
+    y_test_hat <- predict(rst_forests,Spat_test,type="response")
+    ce_train <- mean(y_train_hat != Spat_train $CogTask)
+    ce_test <- mean(y_test_hat != Spat_test$CogTask)
+    # 5 column : all, Calc, Reas, Spat, None
+    rst_boot$train[i,4] <- ce_train
+    rst_boot$test[i,4] <- ce_test
+    
+    None_train <- filter(trainData, CogTask == "None")
+    None_test <- filter(testData, CogTask == "None")
+    y_train_prob_tree <- predict(rst_forests,None_train,type="prob")[,2]
+    y_train_hat <- predict(rst_forests,None_train,type="response")
+    y_test_prob_tree <- predict(rst_forests,None_test,type="prob")[,2]
+    y_test_hat <- predict(rst_forests,None_test,type="response")
+    ce_train <- mean(y_train_hat != None_train $CogTask)
+    ce_test <- mean(y_test_hat != None_test$CogTask)
+    # 5 column : all, Calc, Reas, Spat, None
+    rst_boot$train[i,5] <- ce_train 
+    rst_boot$test[i,5] <- ce_test
     
   }
-  # 4 column : all, open, mid, end
+  # 5 column : all, Calc, Reas, Spat, None
   meanrst_boot$train[t,1] <- mean(rst_boot$train[,1])
   meanrst_boot$test[t,1] <- mean(rst_boot$test[,1])
   meanrst_boot$train[t,2] <- mean(rst_boot$train[,2])
@@ -101,14 +130,16 @@ for (t in 1:10000){
   meanrst_boot$test[t,3] <- mean(rst_boot$test[,3])
   meanrst_boot$train[t,4] <- mean(rst_boot$train[,4])
   meanrst_boot$test[t,4] <- mean(rst_boot$test[,4])
+  meanrst_boot$train[t,5] <- mean(rst_boot$train[,5])
+  meanrst_boot$test[t,5] <- mean(rst_boot$test[,5])
   
 }
-# 4 column : all, open, mid, end
+# 4 column : all, Calc, Reas, Spat
 quantile(meanrst_boot$test[,1],c(.025,.975),na.rm = T)
 quantile(meanrst_boot$test[,2],c(.025,.975),na.rm = T) 
 quantile(meanrst_boot$test[,3],c(.025,.975),na.rm = T) 
 quantile(meanrst_boot$test[,4],c(.025,.975),na.rm = T) 
+quantile(meanrst_boot$test[,5],c(.025,.975),na.rm = T) 
 
-
-saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_RF_Boot_10000.Rdata")
+saveRDS(meanrst_boot,file = "../GoCogdata/CogTask_RF_Boot_10000_Ex.Rdata")
 

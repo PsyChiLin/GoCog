@@ -41,7 +41,7 @@ for (t in 1:10000){
   # bind data
   dta_3s_boot <- rbind(dta_3s_Open_boot,dta_3s_Mid_boot,dta_3s_End_boot)
   # 8 folds
-  folds <- c(1:24,1:24,1:24)
+  folds <- rep(rep(1:8,3),3)
   # 4 columns : all, open, mid, end
   rst_boot <- list()
   rst_boot$train <- matrix(NA,8,4) # 4 column : all, open, mid, end
