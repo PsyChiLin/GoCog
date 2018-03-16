@@ -25,7 +25,7 @@ meanrst_boot$train <- matrix(NA,10000,5) # 5 column : all, None
 meanrst_boot$test <- matrix(NA,10000,5)  # 4 column : all, open, mid, end
 
 
-for (t in 1:10){
+for (t in 1:10000){
   print(t)
   set.seed(t)
   # equally sampling
@@ -46,7 +46,7 @@ for (t in 1:10){
   # bind data
   dta_4c_boot <- rbind(dta_4c_Calc_boot,dta_4c_Reas_boot,dta_4c_Spat_boot,dta_4c_None_boot)
   # 8 folds
-  folds <- c(1:24,1:24,1:24,1:24)
+  folds <- rep(rep(1:8,3),4)
 
   # 5 column : all, Calc, Reas, Spat, None
   rst_boot <- list()
