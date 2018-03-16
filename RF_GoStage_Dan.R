@@ -31,10 +31,22 @@ meanrst_boot$test <- matrix(NA,10000,4)  # 4 column : all, open, mid, end
 
 for (t in 1:10000){
   print(t)
+  set.seed(t)
+  # equally sampling
+  dta_3s_dan_Open <- filter(dta_3s_dan, GoStage == "Open")
+  dta_3s_dan_Mid <- filter(dta_3s_dan, GoStage == "Mid")
+  dta_3s_dan_End <- filter(dta_3s_dan, GoStage == "End")
   # Bootstrapping
-  dta_3s_dan_boot <- dta_3s_dan[sample(nrow(dta_3s_dan),replace = T),]
-  #folds <- rep(rep(sample(1:8),each = 3),3)
-  folds <- sample(rep(rep(sample(1:8),3),2))
+  dta_3s_dan_Open_boot <- dta_3s_dan_Open[sample(nrow(dta_3s_dan_Open),replace = T),]
+  dta_3s_dan_Mid_boot  <- dta_3s_dan_Mid[sample(nrow(dta_3s_dan_Mid),replace = T),]
+  dta_3s_dan_End_boot  <- dta_3s_dan_End[sample(nrow(dta_3s_dan_End),replace = T),]
+  # random order
+  dta_3s_dan_Open_boot <- dta_3s_dan_Open_boot[sample(nrow(dta_3s_dan_Open_boot)),]
+  dta_3s_dan_Mid_boot  <- dta_3s_dan_Mid_boot[sample(nrow(dta_3s_dan_Mid_boot)),]
+  dta_3s_dan_End_boot <- dta_3s_dan_End_boot[sample(nrow(dta_3s_dan_End_boot)),]
+  # bind data
+  dta_3s_dan_boot <- rbind(dta_3s_dan_Open_boot,dta_3s_dan_Mid_boot,dta_3s_dan_End_boot)
+  folds <- c(1:16,1:16,1:16)
   
   rst_boot <- list()
   rst_boot$train <- matrix(NA,8,4) # 4 column : all, open, mid, end
@@ -114,8 +126,6 @@ quantile(meanrst_boot$test[,3],c(.025,.975),na.rm = T)
 quantile(meanrst_boot$test[,4],c(.025,.975),na.rm = T) 
 
 saveRDS(meanrst_boot,file = "../GoCogdata/GoStage_BothACC_RF_10000_Ex_Dan.Rdata")
-
-
 
 
 
