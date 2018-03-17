@@ -26,7 +26,7 @@ meanrst_boot$train <- matrix(NA,10000,5) # 5 column : all, None
 meanrst_boot$test <- matrix(NA,10000,5)  # 4 column : all, open, mid, end
 
 
-for (t in 1:10){
+for (t in 1:10000){
   print(t)
   set.seed(t)
   # equally sampling
@@ -173,7 +173,7 @@ meanrst_boot$train <- matrix(NA,10000,5) # 5 column : all, None
 meanrst_boot$test <- matrix(NA,10000,5)  # 4 column : all, open, mid, end
 
 
-for (t in 1:10){
+for (t in 1:10000){
   print(t)
   set.seed(t)
   # equally sampling

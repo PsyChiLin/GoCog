@@ -4,8 +4,6 @@ library(reshape2)
 library(e1071)
 library(pROC)
 library(ggplot2)
-library(grid)
-library(gridExtra)
 
 rm(list = ls())
 theme_default <- function(base_size = 12, base_family = ""){
@@ -13,15 +11,14 @@ theme_default <- function(base_size = 12, base_family = ""){
     theme( strip.background = element_blank()
     )
 }
-meanrst_boot <- readRDS("../GoCogdata/GoStage_BothACC_RF_10000_Ex_Dan.Rdata")
+meanrst_boot <- readRDS("../GoCogdata/CogTask_RF_Boot_10000_Ex_Dan.Rdata")
 dattest <- na.omit(as.data.frame(meanrst_boot$test))
-colnames(dattest) <- c("All","Open","Mid","End")
+colnames(dattest) <- c("All","Calc","Reas","Spat","None")
 head(dattest)
 long <- melt(dattest)
-colnames(long) <- c("GoStage","CE")
+colnames(long) <- c("GogTask","CE")
 
-dan <- ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+  
-  #facet_grid(~GoStage)+
+Dan <- ggplot(data = long, aes(x = CE, group = GogTask, fill = GogTask))+  
   geom_density(alpha=.35)+
   geom_vline(aes(xintercept=mean(dattest$All)),
              color="#FF6699", linetype="dashed", size=1)+
@@ -40,15 +37,27 @@ dan <- ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+
   theme_default()+
   theme(plot.title = element_text(hjust = 0.5))
 
-meanrst_boot2 <- readRDS("../GoCogdata/GoStage_BothACC_RF_10000_Ex_Kyu.Rdata")
+
+library(randomForest)
+library(dplyr)
+library(reshape2)
+library(e1071)
+library(pROC)
+library(ggplot2)
+
+theme_default <- function(base_size = 12, base_family = ""){
+  theme_bw(base_size = base_size, base_family = base_family) %+replace%
+    theme( strip.background = element_blank()
+    )
+}
+meanrst_boot2 <- readRDS("../GoCogdata/CogTask_RF_Boot_10000_Ex_Kyu.Rdata")
 dattest2 <- na.omit(as.data.frame(meanrst_boot2$test))
-colnames(dattest2) <- c("All","Open","Mid","End")
+colnames(dattest2) <- c("All","Calc","Reas","Spat","None")
 head(dattest2)
 long2 <- melt(dattest2)
-colnames(long2) <- c("GoStage","CE")
+colnames(long2) <- c("GogTask","CE")
 
-kyu <- ggplot(data = long2, aes(x = CE, group = GoStage, fill = GoStage))+  
-  #facet_grid(~GoStage)+
+Kyu <- ggplot(data = long2, aes(x = CE, group = GogTask, fill = GogTask))+  
   geom_density(alpha=.35)+
   geom_vline(aes(xintercept=mean(dattest2$All)),
              color="#FF6699", linetype="dashed", size=1)+
@@ -67,4 +76,5 @@ kyu <- ggplot(data = long2, aes(x = CE, group = GoStage, fill = GoStage))+
   theme_default()+
   theme(plot.title = element_text(hjust = 0.5))
 
-grid.arrange(dan,kyu, ncol = 2)
+
+grid.arrange(Dan,Kyu,ncol=2)
