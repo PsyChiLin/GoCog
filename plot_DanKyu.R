@@ -4,6 +4,10 @@ library(reshape2)
 library(e1071)
 library(pROC)
 library(ggplot2)
+library(grid)
+library(gridExtra)
+
+rm(list = ls())
 theme_default <- function(base_size = 12, base_family = ""){
   theme_bw(base_size = base_size, base_family = base_family) %+replace%
     theme( strip.background = element_blank()
@@ -17,7 +21,7 @@ dattest <- as.data.frame(meanrst_boot$test)
 colnames(dattest) <- c("CE","AUC")
 head(dattest)
 
-ggplot(data = dattest,aes(x = CE))+  
+DanKyu_CE <- ggplot(data = dattest,aes(x = CE))+  
   #geom_histogram(aes(y = ..density..),
   #               binwidth = 0.05,
   #               #center = 0.01,
@@ -41,7 +45,7 @@ ggplot(data = dattest,aes(x = CE))+
   theme_default()+
   theme(plot.title = element_text(hjust = 0.5))
 
-ggplot(data = dattest,aes(x = AUC))+  
+DanKyu_AUC <- ggplot(data = dattest,aes(x = AUC))+  
   #geom_histogram(aes(y = ..density..),
   #               binwidth = 0.01,
   #               center = 5,
@@ -64,3 +68,5 @@ ggplot(data = dattest,aes(x = AUC))+
   xlab("AUC")+
   theme_default()+
   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(DanKyu_CE,DanKyu_AUC, ncol = 2)

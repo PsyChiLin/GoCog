@@ -20,7 +20,7 @@ head(dattest)
 long <- melt(dattest)
 colnames(long) <- c("GoStage","CE")
 
-dan <- ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+  
+Gostage_dan <- ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+  
   #facet_grid(~GoStage)+
   geom_density(alpha=.35)+
   geom_vline(aes(xintercept=mean(dattest$All)),
@@ -29,7 +29,7 @@ dan <- ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+
              color="#FF6699", linetype="dashed", size=1)+
   geom_vline(aes(xintercept=quantile(dattest[,1],c(.025,.975))[2]),
              color="#FF6699", linetype="dashed", size=1)+
-  ggtitle(paste0("All Stages : Mean CE = ",round(mean(dattest$All),3),
+  ggtitle(paste0("Dan - All Stages : Mean CE = ",round(mean(dattest$All),3),
                  " (",
                  round(quantile(dattest[,1],c(.025,.975))[1],3),
                  " ~ ",
@@ -47,7 +47,7 @@ head(dattest2)
 long2 <- melt(dattest2)
 colnames(long2) <- c("GoStage","CE")
 
-kyu <- ggplot(data = long2, aes(x = CE, group = GoStage, fill = GoStage))+  
+Gostage_kyu <- ggplot(data = long2, aes(x = CE, group = GoStage, fill = GoStage))+  
   #facet_grid(~GoStage)+
   geom_density(alpha=.35)+
   geom_vline(aes(xintercept=mean(dattest2$All)),
@@ -56,7 +56,7 @@ kyu <- ggplot(data = long2, aes(x = CE, group = GoStage, fill = GoStage))+
              color="#FF6699", linetype="dashed", size=1)+
   geom_vline(aes(xintercept=quantile(dattest2[,1],c(.025,.975))[2]),
              color="#FF6699", linetype="dashed", size=1)+
-  ggtitle(paste0("All Stages : Mean CE = ",round(mean(dattest2$All),3),
+  ggtitle(paste0("Kyu - All Stages : Mean CE = ",round(mean(dattest2$All),3),
                  " (",
                  round(quantile(dattest2[,1],c(.025,.975))[1],3),
                  " ~ ",
@@ -67,4 +67,4 @@ kyu <- ggplot(data = long2, aes(x = CE, group = GoStage, fill = GoStage))+
   theme_default()+
   theme(plot.title = element_text(hjust = 0.5))
 
-grid.arrange(dan,kyu, ncol = 2)
+grid.arrange(Gostage_dan,Gostage_kyu, ncol = 2)

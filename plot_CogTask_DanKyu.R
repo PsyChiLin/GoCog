@@ -26,7 +26,7 @@ Dan <- ggplot(data = long, aes(x = CE, group = GogTask, fill = GogTask))+
              color="#FF6699", linetype="dashed", size=1)+
   geom_vline(aes(xintercept=quantile(dattest[,1],c(.025,.975))[2]),
              color="#FF6699", linetype="dashed", size=1)+
-  ggtitle(paste0("All Stages : Mean CE = ",round(mean(dattest$All),3),
+  ggtitle(paste0("Dan - All Stages : Mean CE = ",round(mean(dattest$All),3),
                  " (",
                  round(quantile(dattest[,1],c(.025,.975))[1],3),
                  " ~ ",
@@ -65,7 +65,7 @@ Kyu <- ggplot(data = long2, aes(x = CE, group = GogTask, fill = GogTask))+
              color="#FF6699", linetype="dashed", size=1)+
   geom_vline(aes(xintercept=quantile(dattest2[,1],c(.025,.975))[2]),
              color="#FF6699", linetype="dashed", size=1)+
-  ggtitle(paste0("All Stages : Mean CE = ",round(mean(dattest2$All),3),
+  ggtitle(paste0("Kyu - All Stages : Mean CE = ",round(mean(dattest2$All),3),
                  " (",
                  round(quantile(dattest2[,1],c(.025,.975))[1],3),
                  " ~ ",

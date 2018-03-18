@@ -4,6 +4,8 @@ library(reshape2)
 library(e1071)
 library(pROC)
 library(ggplot2)
+library(grid)
+library(gridExtra)
 
 rm(list = ls())
 theme_default <- function(base_size = 12, base_family = ""){
@@ -18,7 +20,7 @@ head(dattest)
 long <- melt(dattest)
 colnames(long) <- c("GoStage","CE")
 
-ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+  
+GostageCE <- ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+  
   #facet_grid(~GoStage)+
   geom_density(alpha=.35)+
   geom_vline(aes(xintercept=mean(dattest$All)),
@@ -37,3 +39,4 @@ ggplot(data = long, aes(x = CE, group = GoStage, fill = GoStage))+
   xlab("CE")+
   theme_default()+
   theme(plot.title = element_text(hjust = 0.5))
+GostageCE
