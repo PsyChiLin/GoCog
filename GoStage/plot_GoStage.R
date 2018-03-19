@@ -14,6 +14,8 @@ theme_default <- function(base_size = 12, base_family = ""){
     )
 }
 meanrst_boot <- readRDS("../GoCogdata/GoStage_BothACC_RF_10000_Ex.Rdata")
+#meanrst_boot <- readRDS("../GoCogdata/GoStage_BothACC_RF_10000_Ex_Perm.Rdata")
+
 dattest <- na.omit(as.data.frame(meanrst_boot$test))
 colnames(dattest) <- c("All","Open","Mid","End")
 head(dattest)
