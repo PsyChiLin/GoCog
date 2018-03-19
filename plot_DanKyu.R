@@ -13,9 +13,9 @@ theme_default <- function(base_size = 12, base_family = ""){
     theme( strip.background = element_blank()
     )
 }
-meanrst_boot <- readRDS("../GoCogdata/DanKyu_BothACC_RF_10000_EX.Rdata")
+#meanrst_boot <- readRDS("../GoCogdata/DanKyu_BothACC_RF_10000_EX.Rdata")
 #meanrst_boot <- readRDS("../GoCogdata/DanKyu_BothACC_RF_10000_US.Rdata")
-#meanrst_boot <- readRDS("../GoCogdata/DanKyu_BothACC_RF_10000_OS.Rdata")
+meanrst_boot <- readRDS("../GoCogdata/DanKyu_BothACC_RF_10000_OS.Rdata")
 
 dattest <- as.data.frame(meanrst_boot$test)
 colnames(dattest) <- c("CE","AUC")
