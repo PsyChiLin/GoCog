@@ -30,7 +30,7 @@ Kyunodesize <- 3
 
 overallntree <-  1000
 
-Perm_time <- 10
+Perm_time <- 10000
 ############### All Permutation ###############
 meanrst_perm <- list()
 meanrst_perm$train <- matrix(NA,Perm_time,4) # 4 column : all, open, mid, end

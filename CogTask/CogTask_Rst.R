@@ -30,11 +30,11 @@ RF_CogTask$Type <- c("AllSubj","Dan","Kyu")
 
 ############### Parameter ###############
 allmtry <- 2
-allnodesize <- 30
-Danmtry <- 3
-Dannodesize <- 15
-Kyumtry <- 3 
-Kyunodesize <- 3
+allnodesize <- 20
+danmtry <- 2
+dannodesize <- 10
+kyumtry <- 3
+kyunodesize <- 5
 
 overallntree <-  1000
 
@@ -160,9 +160,9 @@ for(i in 1:8){
   testData <- dta_4c_dan_new[testIndexes, c(4:10)]
   trainData <- dta_4c_dan_new[-testIndexes, c(4:10)]
   rst_forests <- randomForest(CogTask~., data = trainData,
-                              mtry = allmtry , 
+                              mtry = danmtry , 
                               ntree = overallntree, 
-                              nodesize = allnodesize,
+                              nodesize = dannodesize,
                               importance = T)
   # Overall
   y_train_prob_tree <- predict(rst_forests,trainData,type="prob")[,2]
@@ -256,9 +256,9 @@ for(i in 1:8){
   testData <- dta_4c_kyu_new[testIndexes, c(4:10)]
   trainData <- dta_4c_kyu_new[-testIndexes, c(4:10)]
   rst_forests <- randomForest(CogTask~., data = trainData,
-                              mtry = allmtry , 
+                              mtry = kyumtry , 
                               ntree = overallntree, 
-                              nodesize = allnodesize,
+                              nodesize = kyunodesize,
                               importance = T)
   # Overall
   y_train_prob_tree <- predict(rst_forests,trainData,type="prob")[,2]
@@ -327,3 +327,6 @@ RF_CogTask[3,5] <- mean(rst$test[,4])
 RF_CogTask[3,6] <- mean(rst$test[,5])
 
 RF_CogTask
+saveRDS(RF_CogTask,file = "Output/CogTask_bACCbRT_RF_Rst.Rdata")
+
+
