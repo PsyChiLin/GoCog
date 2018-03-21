@@ -30,7 +30,7 @@ perm_kyu_test <- as.data.frame(1-perm_kyu$test)
 colnames(perm_kyu_test) <- c("All","Open","Mid","End")
 #head(perm_dan_test)
 #perm_all_test_long <- melt(perm_all_test)
-#colnames(perm_all_test_long) <- c("GoStage","CE")
+#colnames(perm_all_test_long) <- c("GoStage","accuracy")
 perm_dan_test$Level <- "Dan"
 perm_kyu_test$Level <- "Kyu"
 perm_dankyu <- rbind(perm_dan_test,perm_kyu_test)
@@ -38,32 +38,41 @@ perm_dankyu <- rbind(perm_dan_test,perm_kyu_test)
 
 Gostage_all_ACC <- ggplot(data = perm_all_test, aes(x = All))+  
   #facet_grid(~GoStage)+
-  geom_density(alpha=.35, col = "chartreuse4", fill = "chartreuse4" )+
+  geom_density(alpha=.35,
+               col = "#000000", 
+               fill = "#000000"
+               )+
   geom_vline(aes(xintercept=quantile(perm_all_test[,1],c(.95))[1]),
-             color="firebrick", size=1)+
+             #color="firebrick", 
+             size=1)+
   geom_vline(aes(xintercept=rst$All[1]), # All
-             color="#FF6699",linetype="F1",size=1)+
+             #color="#FF6699",
+             linetype="twodash",size=1)+
   #geom_vline(aes(xintercept=rst$Open[1]), # Open
   #           color="#FF66CC",linetype="longdash",size=1)+
   #geom_vline(aes(xintercept=rst$Mid[1]), # Mid
   #           color="#FF33CC",linetype="dashed",size=1)+
   #geom_vline(aes(xintercept=rst$End[1]), # End
   #           color="#CC0099",linetype="dotted",size=1)+
-  ggtitle(paste0("Overall Performance: Mean ACC = ",
-                 xintercept=round(rst$All[1],2)))+
+  ggtitle(paste0("(A) Gostage: Overall Performance"))+
   ylab("Density")+
-  xlab("CE")+
+  xlab("Accuracy")+
   xlim(0,1)+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0,size = 10))
 
 Gostage_dan_ACC <- ggplot(data = perm_dan_test, aes(x = All))+  
   #facet_grid(~GoStage)+
-  geom_density(alpha=.35, col = "chartreuse4", fill = "chartreuse4" )+
+  geom_density(alpha=.35,
+               col = "#000000", 
+               fill = "#000000" 
+               )+
   geom_vline(aes(xintercept=quantile(perm_dan_test[,1],c(.95))[1]),
-             color="firebrick", size=1)+
+             #color="firebrick",
+             size=1)+
   geom_vline(aes(xintercept=rst$All[2]), # All
-             color="#FF6699",linetype="F1",size=1)+
+             #color="#FF6699",
+             linetype="twodash",size=1)+
   #geom_vline(aes(xintercept=rst$Open[2]), # Open
   #           color="#FF66CC",linetype="longdash",size=1)+
   #geom_vline(aes(xintercept=rst$Mid[2]), # Mid
@@ -73,19 +82,24 @@ Gostage_dan_ACC <- ggplot(data = perm_dan_test, aes(x = All))+
   ggtitle(paste0("Dan Performance: Mean ACC = ",
                  xintercept=round(rst$All[2],2)))+
   ylab("Density")+
-  xlab("CE")+
+  xlab("Accuracy")+
   xlim(0,1)+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0,size = 10))
 
 
 Gostage_kyu_ACC <- ggplot(data = perm_kyu_test, aes(x = All))+  
   #facet_grid(~GoStage)+
-  geom_density(alpha=.35, col = "chartreuse4", fill = "chartreuse4" )+
+  geom_density(alpha=.35,
+               col = "#000000",
+               fill = "#000000"
+               )+
   geom_vline(aes(xintercept=quantile(perm_kyu_test[,1],c(.95))[1]),
-             color="firebrick", size=1)+
+             #color="firebrick", 
+             size=1)+
   geom_vline(aes(xintercept=rst$All[3]), # All
-             color="#FF6699",linetype="F1",size=1)+
+             #color="#FF6699",
+             linetype="twodash",size=1)+
   #geom_vline(aes(xintercept=rst$Open[3]), # Open
   #           color="#FF66CC",linetype="longdash",size=1)+
   #geom_vline(aes(xintercept=rst$Mid[3]), # Mid
@@ -95,32 +109,52 @@ Gostage_kyu_ACC <- ggplot(data = perm_kyu_test, aes(x = All))+
   ggtitle(paste0("Kyu Performance: Mean ACC = ",
                  xintercept=round(rst$All[3],2)))+
   ylab("Density")+
-  xlab("CE")+
+  xlab("Accuracy")+
   xlim(0,1)+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0,size = 10))
 
-Gostage_dankyu_ACC <- ggplot(data = perm_dankyu, aes(x = All, 
-                                                     group= Level, fill = Level))+  
+Gostage_dankyu_ACC <- ggplot(data = perm_dankyu, aes(x = All,
+                                                     fill = Level, 
+                                                     group= Level
+                                                     ))+  
   facet_grid(~Level)+
   geom_density(alpha=.35)+
+  geom_vline(data=filter(perm_dankyu, Level == "Dan"), 
+             aes(xintercept = quantile(filter(perm_dankyu, Level == "Dan")[,1],.95)[1]), 
+             #col = "firebrick",
+             size=1)+
+  geom_vline(data=filter(perm_dankyu, Level == "Kyu"), 
+            aes(xintercept = quantile(filter(perm_dankyu, Level == "Kyu")[,1],.95)[1]), 
+            #col = "firebrick",
+            size=1) + 
+  geom_vline(data=filter(perm_dankyu, Level == "Dan"), 
+             aes(xintercept = mean(rst$All[2])), 
+             #col = "#FF6699",
+             linetype="twodash",size=1)+
+  geom_vline(data=filter(perm_dankyu, Level == "Kyu"), 
+             aes(xintercept = mean(rst$All[3])), 
+             #col = "#FF6699",
+             linetype="twodash",size=1) +
   #geom_vline(aes(xintercept=quantile(perm_kyu_test[,1],c(.95))[1]),
   #           color="firebrick", size=1)+
   #geom_vline(aes(xintercept=rst$All[3]), # All
-  #           color="#FF6699",linetype="F1",size=1)+
+  #           color="#FF6699",linetype="twodash",size=1)+
   #geom_vline(aes(xintercept=rst$Open[3]), # Open
   #           color="#FF66CC",linetype="longdash",size=1)+
   #geom_vline(aes(xintercept=rst$Mid[3]), # Mid
   #           color="#FF33CC",linetype="dashed",size=1)+
   #geom_vline(aes(xintercept=rst$End[3]), # End
   #           color="#CC0099",linetype="dotted",size=1)+
-  #ggtitle(paste0("Kyu Performance: Mean ACC = ",
-  #               xintercept=round(rst$All[3],2)))+
+  ggtitle(paste0("(B) Gostage: Dan & Kyu Performance"))+
+  scale_fill_grey()+
   ylab("Density")+
-  xlab("CE")+
+  xlab("Accuracy")+
   xlim(0,1)+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0.5))
-
-grid.arrange(Gostage_all_ACC,Gostage_dan_ACC,Gostage_kyu_ACC,ncol=3)
-
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        legend.position = c(0.9,0.8))
+  
+pdf("GoStage.pdf", width = 7,height = 7)
+grid.arrange(Gostage_all_ACC,Gostage_dankyu_ACC,ncol=1)
+dev.off()
