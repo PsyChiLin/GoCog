@@ -3,6 +3,15 @@ GoCog<-read.csv("../GoCogdata/GoCog.csv", h=T)
 GoCog$Subj<-as.factor(GoCog$Subj)
 head(GoCog)
 
+## Two-Way
+model01 <- aov(Both_ACC ~ (GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
+bACC0 <- summary(model01)
+capture.output(bACC0, file = "Output/aov2_Overall_BothACC.txt")
+
+model02 <- aov(Both_RT ~ (GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
+bRT0 <- summary(model02)
+capture.output(bRT0, file = "Output/aov2_Overall_BothRT.txt")
+
 ## three-way ANOVA_Both
 model1 <- aov(Both_ACC ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
 bACC <- summary(model1)

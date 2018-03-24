@@ -30,8 +30,7 @@ GoCog$Both_RT <- GoCog$Both_RT/1000
 GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
 GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
 
-############ Overall ############ 
-
+########################  Overall ########################  
 ## MainEffect Plot
 GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
   #scale_colour_grey(start = 0.5, end = 0)+
@@ -46,8 +45,9 @@ GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
 
 GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
   #scale_colour_grey(start = 0.5, end = 0)+
-  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 1) +
-  stat_summary(fun.data = mean_se, geom = "errorbar", linetype = "solid", width = .1)+
+  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 1, col = "#666666") +
+  stat_summary(fun.data = mean_se, geom = "errorbar",
+               linetype = "solid", width = .1,col = "#666666")+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10))+
   ylab("RT (sec)")+
@@ -58,7 +58,8 @@ GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
 CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
   #scale_colour_grey(start = 0.5, end = 0)+
   stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
-  stat_summary(fun.data = mean_se, geom = "errorbar", linetype = "solid", width = .1)+
+  stat_summary(fun.data = mean_se, geom = "errorbar", 
+               linetype = "solid", width = .1)+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10))+
   ylab("Accuracy (%)")+
@@ -68,8 +69,9 @@ CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
 
 CogTaskbRT <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_RT))+
   #scale_colour_grey(start = 0.5, end = 0)+
-  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 1) +
-  stat_summary(fun.data = mean_se, geom = "errorbar", linetype = "solid", width = .1)+
+  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 1,col = "#666666") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", 
+               linetype = "solid", width = .1,col = "#666666")+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10))+
   ylab("RT (sec)")+
@@ -81,90 +83,37 @@ pdf("Output/Aov3_Overall_MainEffect.pdf", width = 7,height = 7)
 grid.arrange(GoStagebACC,GoStagebRT,CogTaskbACC,CogTaskbRT,ncol =2)
 dev.off()
 
-
-
 ## Interaction Plot
-
-#BothACC(by Stage)
-bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = SubjGroup, 
-                                 color = SubjGroup, shape=SubjGroup)) +
+bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = GoStage)) +
   scale_colour_grey(start = 0.5, end = 0)+
   facet_grid(.~GoStage) +
-  stat_summary(fun.y = mean, geom = "point", size = 2,
-               position=position_dodge(width=0.3)) +
-  stat_summary(fun.y = mean, geom = "line",
-               position=position_dodge(width=0.3)) +
+  stat_summary(fun.y = mean, geom = "point", size = 2, shape = 19) +
+  stat_summary(fun.y = mean, geom = "line") +
   stat_summary(fun.data = mean_se, geom = "errorbar",
-               linetype = "solid", width = .2,
-               position=position_dodge(width=0.3)) +
-  scale_shape_manual(values=c(1,19)) +
+               linetype = "solid", width = .2) +
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),
-        legend.position = "none")+
+  theme(plot.title = element_text(hjust = 0,size = 10))+
   ylab("Accuracy (%)")+
   #coord_cartesian(ylim=c(0.3,0.9))+
   ggtitle(paste0("(A) Both ACC"))
 
 #BothRT(by Stage)
-bRT <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = SubjGroup, 
-                                color = SubjGroup, shape=SubjGroup)) +
+bRT <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = GoStage)) +
   scale_colour_grey(start = 0.5, end = 0)+
   facet_grid(.~GoStage) +
-  stat_summary(fun.y = mean, geom = "point", size = 2,
-               position=position_dodge(width=0.3)) +
-  stat_summary(fun.y = mean, geom = "line",
-               position=position_dodge(width=0.3)) +
+  stat_summary(fun.y = mean, geom = "point", size = 2,shape = 1, col = "#666666") +
+  stat_summary(fun.y = mean, geom = "line", col = "#666666") +
   stat_summary(fun.data = mean_se, geom = "errorbar",
-               linetype = "solid", width = .2,
-               position=position_dodge(width=0.3)) +
-  scale_shape_manual(values=c(1,19)) +
+               linetype = "solid", width = .2, col = "#666666") +
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),
-        legend.position = "none")+
+  theme(plot.title = element_text(hjust = 0,size = 10))+
   ylab("RT (sec)")+
   #coord_cartesian(ylim=c(0.3,0.9))+
   ggtitle(paste0("(B) Both RT"))
 
-dk <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = SubjGroup, 
-                               color = SubjGroup, shape=SubjGroup)) +
-  scale_colour_grey(start = 0.5, end = 0)+
-  facet_grid(.~GoStage) +
-  stat_summary(fun.y = mean, geom = "point", size = 2,
-               position=position_dodge(width=0.3)) +
-  stat_summary(fun.y = mean, geom = "line",
-               position=position_dodge(width=0.3)) +
-  stat_summary(fun.data = mean_se, geom = "errorbar",
-               linetype = "solid", width = .2,
-               position=position_dodge(width=0.3)) +
-  scale_shape_manual(values=c(1,19)) +
-  theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),
-        legend.position = "top")
-
-dk <- g_legend(dk)
-
-pdf("Output/Aov3_Interaction.pdf", width = 7,height = 7)
-grid.arrange(arrangeGrob(bACC,
-                         bRT,
-                         nrow=2),
-             dk, nrow=2,heights=c(10, 1))
+pdf("Output/Aov3_Overall_Interaction.pdf", width = 7,height = 7)
+grid.arrange(bACC,bRT,nrow=2)
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ############ Dan Kyu: Main and Interaction ############
 
@@ -232,7 +181,7 @@ CogTaskbRT <- ggplot(data = GoCog,  aes(x = CogTask, y =  Both_RT,
   coord_cartesian(ylim=c(10,24))+
   ggtitle(paste0("(D) CogTask: Both RT"))
 
-pdf("Output/Aov3_MainEffect.pdf", width = 7,height = 7)
+pdf("Output/Aov3_DanKyu_MainEffect.pdf", width = 7,height = 7)
 grid.arrange(GoStagebACC,GoStagebRT,CogTaskbACC,CogTaskbRT,ncol =2)
 dev.off()
 ## Interaction Plot
@@ -295,7 +244,7 @@ dk <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = SubjGroup,
 
 dk <- g_legend(dk)
 
-pdf("Output/Aov3_Interaction.pdf", width = 7,height = 7)
+pdf("Output/Aov3_DanKyu_Interaction.pdf", width = 7,height = 7)
 grid.arrange(arrangeGrob(bACC,
                          bRT,
                          nrow=2),
