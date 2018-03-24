@@ -1,0 +1,29 @@
+
+Error: Subj
+          Df    Sum Sq  Mean Sq F value Pr(>F)
+SubjGroup  1 4.511e+07 45106153   0.862  0.363
+Residuals 22 1.151e+09 52303731               
+
+Error: Subj:GoStage
+                  Df    Sum Sq   Mean Sq F value   Pr(>F)    
+GoStage            2 835403826 417701913  22.766 1.63e-07 ***
+SubjGroup:GoStage  2  11122713   5561357   0.303     0.74    
+Residuals         44 807300688  18347743                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Error: Subj:CogTask
+                  Df    Sum Sq   Mean Sq F value Pr(>F)    
+CogTask            3 4.232e+09 1.411e+09  98.373 <2e-16 ***
+SubjGroup:CogTask  3 4.419e+07 1.473e+07   1.027  0.386    
+Residuals         66 9.464e+08 1.434e+07                   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Error: Subj:GoStage:CogTask
+                           Df    Sum Sq  Mean Sq F value  Pr(>F)   
+GoStage:CogTask             6 1.034e+08 17234002   2.107 0.05652 . 
+SubjGroup:GoStage:CogTask   6 1.818e+08 30299616   3.705 0.00195 **
+Residuals                 132 1.080e+09  8178333                   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
