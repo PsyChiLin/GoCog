@@ -29,6 +29,41 @@ RST<-read.csv("../GoCogdata/NoneRST_All.csv", h=T)
 #colnames(RST_bACCbRT)[6:7] <- c("RST_Type","Score")
 #head(RST_bACCbRT)
 
+# RSTz_bACCbRT_6 <- melt(RST[,c(1:4,7,10:15)], 
+#                      id.vars = c("Subj","Age","SubjGroup","Both_ACC","Both_RT"))
+# colnames(RSTz_bACCbRT_6)[6:7] <- c("RST_Type","Score")
+# 
+# ggplot(data= RSTz_bACCbRT_6, aes(x = Both_ACC, y = Score,
+#                                color=SubjGroup, shape=SubjGroup)) +
+#   facet_grid(~RST_Type)+
+#   theme_default() + 
+#   theme(plot.title = element_text(hjust = 0,size = 10),
+#         legend.position = "none")+
+#   scale_colour_grey(start = 0.5, end = 0)+
+#   geom_point(data = RSTz_bACCbRT_6, aes(color = SubjGroup), size=2) +
+#   stat_smooth(data = RSTz_bACCbRT_6, aes(color = SubjGroup), method = "lm", se = F)+
+#   scale_shape_manual(values=c(1,19))+
+#   xlab(" ")+
+#   ggtitle(paste0("(A) Both ACC"))
+# 
+# RSTz_bACCbRT_6 <- melt(RST[,c(1:4,9,10:15)], 
+#                        id.vars = c("Subj","Age","SubjGroup","Both_ACC","None_RT"))
+# colnames(RSTz_bACCbRT_6)[6:7] <- c("RST_Type","Score")
+# 
+# ggplot(data= RSTz_bACCbRT_6, aes(x = None_RT, y = Score,
+#                                  color=SubjGroup, shape=SubjGroup)) +
+#   facet_grid(~RST_Type)+
+#   theme_default() + 
+#   theme(plot.title = element_text(hjust = 0,size = 10),
+#         legend.position = "none")+
+#   scale_colour_grey(start = 0.5, end = 0)+
+#   geom_point(data = RSTz_bACCbRT_6, aes(color = SubjGroup), size=2) +
+#   stat_smooth(data = RSTz_bACCbRT_6, aes(color = SubjGroup), method = "lm", se = F)+
+#   scale_shape_manual(values=c(1,19))+
+#   xlab(" ")+
+#   ggtitle(paste0("(A) None RT"))
+
+
 RSTz_bACCbRT <- melt(RST[,c(1:4,7,25:27)], 
                     id.vars = c("Subj","Age","SubjGroup","Both_ACC","Both_RT"))
 colnames(RSTz_bACCbRT)[6:7] <- c("RST_Type","Score")
