@@ -27,8 +27,10 @@ GoCog$Subj<-as.factor(GoCog$Subj)
 head(GoCog)
 str(GoCog)
 GoCog$Both_RT <- GoCog$Both_RT/1000
-GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
-GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
+GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"), 
+                        labels = c("佈局","中盤","官子"))
+GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"),
+                       labels = c("無干擾","空間干擾","推理干擾","計算干擾"))
 
 ########################  Overall ########################  
 ## MainEffect Plot
@@ -37,8 +39,10 @@ GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
   stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
   stat_summary(fun.data = mean_se, geom = "errorbar", linetype = "solid", width = .1)+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10))+
-  ylab("正確率 (%)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        text = element_text(family = 'BiauKai'),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5))+
+  ylab("正\n確\n率\n(%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
   ggtitle(paste0("(A) 圍棋三階段: 正確率"))
@@ -49,11 +53,12 @@ GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
   stat_summary(fun.data = mean_se, geom = "errorbar",
                linetype = "solid", width = .1,col = "#666666")+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10))+
-  ylab("RT (sec)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        text = element_text(family = 'BiauKai'))+
+  ylab("反應時間 (秒)")+
   xlab(" ")+
   coord_cartesian(ylim=c(10,24))+
-  ggtitle(paste0("(B) GoStage: Both RT"))
+  ggtitle(paste0("(B) 三階段圍棋題目: 反應時間"))
 
 CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
   #scale_colour_grey(start = 0.5, end = 0)+
@@ -61,11 +66,12 @@ CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
   stat_summary(fun.data = mean_se, geom = "errorbar", 
                linetype = "solid", width = .1)+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10))+
-  ylab("Accuracy (%)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        text = element_text(family = 'BiauKai'))+
+  ylab("正確率 (%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
-  ggtitle(paste0("(C) CogTask: Both ACC"))
+  ggtitle(paste0("(C) 四種認知干擾: 正確率"))
 
 CogTaskbRT <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_RT))+
   #scale_colour_grey(start = 0.5, end = 0)+
@@ -73,13 +79,15 @@ CogTaskbRT <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_RT))+
   stat_summary(fun.data = mean_se, geom = "errorbar", 
                linetype = "solid", width = .1,col = "#666666")+
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10))+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        text = element_text(family = 'BiauKai'))+
   ylab("RT (sec)")+
   xlab(" ")+
   coord_cartesian(ylim=c(10,24))+
-  ggtitle(paste0("(D) CogTask: Both RT"))
+  ggtitle(paste0("(D) 四種認知干擾: 反應時間"))
 
-pdf("Output/Aov3_Overall_MainEffect.pdf", width = 7,height = 7)
+tiff(file = "Output/Aov3_Overall_MainEffect_Chinese.tiff", 
+     width = 6400, height = 6400, units = "px", res = 800)
 grid.arrange(GoStagebACC,GoStagebRT,CogTaskbACC,CogTaskbRT,ncol =2)
 dev.off()
 
