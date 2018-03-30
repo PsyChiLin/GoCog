@@ -31,7 +31,8 @@ GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"),
                         labels = c("佈局","中盤","官子"))
 GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"),
                        labels = c("無干擾","空間干擾","推理干擾","計算干擾"))
-
+GoCog$SubjGroup <- factor(GoCog$SubjGroup, levels=c("Dan", "Kyu"),
+                          labels = c("段位","級位"))
 ########################  Overall ########################  
 ## MainEffect Plot
 GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
@@ -41,7 +42,9 @@ GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
         text = element_text(family = 'BiauKai'),
-        axis.title.y  = element_text(angle = 0, vjust = 0.5))+
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8)
+        )+
   ylab("正\n確\n率\n(%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
@@ -54,8 +57,10 @@ GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
                linetype = "solid", width = .1,col = "#666666")+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
         text = element_text(family = 'BiauKai'))+
-  ylab("反應時間 (秒)")+
+  ylab("反\n應\n時\n間\n(秒)")+
   xlab(" ")+
   coord_cartesian(ylim=c(10,24))+
   ggtitle(paste0("(B) 三階段圍棋題目: 反應時間"))
@@ -67,8 +72,10 @@ CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
                linetype = "solid", width = .1)+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
         text = element_text(family = 'BiauKai'))+
-  ylab("正確率 (%)")+
+  ylab("正\n確\n率\n(%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
   ggtitle(paste0("(C) 四種認知干擾: 正確率"))
@@ -80,16 +87,18 @@ CogTaskbRT <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_RT))+
                linetype = "solid", width = .1,col = "#666666")+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
         text = element_text(family = 'BiauKai'))+
-  ylab("RT (sec)")+
+  ylab("反\n應\n時\n間\n(秒)")+
   xlab(" ")+
   coord_cartesian(ylim=c(10,24))+
   ggtitle(paste0("(D) 四種認知干擾: 反應時間"))
 
-tiff(file = "Output/Aov3_Overall_MainEffect_Chinese.tiff", 
-     width = 6400, height = 6400, units = "px", res = 800)
+tiff(file = "../GoCog_Manuscript/FigureTable/圖3.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
 grid.arrange(GoStagebACC,GoStagebRT,CogTaskbACC,CogTaskbRT,ncol =2)
 dev.off()
+
 
 ## Interaction Plot
 bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = GoStage)) +
@@ -100,10 +109,14 @@ bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = GoStage)) +
   stat_summary(fun.data = mean_se, geom = "errorbar",
                linetype = "solid", width = .2) +
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10))+
-  ylab("Accuracy (%)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("正\n確\n率\n(%)")+
+  xlab(" ")+
   #coord_cartesian(ylim=c(0.3,0.9))+
-  ggtitle(paste0("(A) Both ACC"))
+  ggtitle(paste0("(A) 正確率"))
 
 #BothRT(by Stage)
 bRT <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = GoStage)) +
@@ -114,13 +127,16 @@ bRT <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = GoStage)) +
   stat_summary(fun.data = mean_se, geom = "errorbar",
                linetype = "solid", width = .2, col = "#666666") +
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10))+
-  ylab("RT (sec)")+
-  #coord_cartesian(ylim=c(0.3,0.9))+
-  ggtitle(paste0("(B) Both RT"))
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("反\n應\n時\n間\n(秒)")+
+  xlab(" ")+
+  ggtitle(paste0("(B) 反應時間"))
 
-pdf("Output/Aov3_Overall_Interaction.pdf", width = 7,height = 7)
-grid.arrange(bACC,bRT,nrow=2)
+tiff(file = "../GoCog_Manuscript/FigureTable/圖4.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+grid.arrange(bACC ,bRT,ncol =1)
 dev.off()
 
 ############ Dan Kyu: Main and Interaction ############
@@ -135,11 +151,14 @@ GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC,
                linetype = "solid", width = .1,position=position_dodge(width=0.3)) +
   scale_shape_manual(values=c(1,19)) +
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),legend.position = "none")+
-  ylab("Accuracy (%)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),legend.position = "none",
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("正\n確\n率\n(%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
-  ggtitle(paste0("(A) GoStage: Both ACC"))
+  ggtitle(paste0("(A) 圍棋三階段: 正確率"))
 
 GoStagebRT <- ggplot(data = GoCog,  aes(x = GoStage, y =  Both_RT,
                                         shape = SubjGroup,
@@ -150,14 +169,18 @@ GoStagebRT <- ggplot(data = GoCog,  aes(x = GoStage, y =  Both_RT,
                linetype = "solid", width = .1,position=position_dodge(width=0.3)) +
   scale_shape_manual(values=c(1,19)) +
   theme_default()+
-  ######
-theme(plot.title = element_text(hjust = 0,size = 10),
-      legend.position = c(0.82,0.82))+ 
-  #######
-ylab("RT (sec)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+      ######
+      legend.position = c(0.83,0.83),
+      #######
+      legend.title=element_blank(),
+      axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+      axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+      text = element_text(family = 'BiauKai'))+ 
+ylab("反\n應\n時\n間\n(秒)")+
   xlab(" ")+
   coord_cartesian(ylim=c(10,24))+
-  ggtitle(paste0("(B) GoStage: Both RT"))
+  ggtitle(paste0("(B) 三階段圍棋題目: 反應時間"))
 
 CogTaskbACC <- ggplot(data = GoCog,  aes(x = CogTask, y =  Both_ACC,
                                          shape = SubjGroup,
@@ -168,11 +191,14 @@ CogTaskbACC <- ggplot(data = GoCog,  aes(x = CogTask, y =  Both_ACC,
                linetype = "solid", width = .1,position=position_dodge(width=0.3)) +
   scale_shape_manual(values=c(1,19)) +
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),legend.position = "none")+
-  ylab("Accuracy (%)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),legend.position = "none",
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("正\n確\n率\n(%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
-  ggtitle(paste0("(C) CogTask: Both ACC"))
+  ggtitle(paste0("(C) 四種認知干擾: 正確率"))
 
 CogTaskbRT <- ggplot(data = GoCog,  aes(x = CogTask, y =  Both_RT,
                                         shape = SubjGroup,
@@ -183,13 +209,16 @@ CogTaskbRT <- ggplot(data = GoCog,  aes(x = CogTask, y =  Both_RT,
                linetype = "solid", width = .1,position=position_dodge(width=0.3)) +
   scale_shape_manual(values=c(1,19)) +
   theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),legend.position = "none")+
-  ylab("RT (sec)")+
+  theme(plot.title = element_text(hjust = 0,size = 10),legend.position = "none",
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("反\n應\n時\n間\n(秒)")+
   xlab(" ")+
   coord_cartesian(ylim=c(10,24))+
-  ggtitle(paste0("(D) CogTask: Both RT"))
+  ggtitle(paste0("(D) 四種認知干擾: 反應時間"))
 
-pdf("Output/Aov3_DanKyu_MainEffect.pdf", width = 7,height = 7)
+tiff(file = "../GoCog_Manuscript/FigureTable/圖5.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
 grid.arrange(GoStagebACC,GoStagebRT,CogTaskbACC,CogTaskbRT,ncol =2)
 dev.off()
 ## Interaction Plot
@@ -209,10 +238,13 @@ bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = SubjGroup,
   scale_shape_manual(values=c(1,19)) +
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
-        legend.position = "none")+
-  ylab("Accuracy (%)")+
-  #coord_cartesian(ylim=c(0.3,0.9))+
-  ggtitle(paste0("(A) Both ACC"))
+        legend.position = "none",
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("正\n確\n率\n(%)")+
+  xlab(" ")+
+  ggtitle(paste0("(A) 正確率"))
 
 #BothRT(by Stage)
 bRT <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = SubjGroup, 
@@ -229,10 +261,13 @@ bRT <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = SubjGroup,
   scale_shape_manual(values=c(1,19)) +
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
-        legend.position = "none")+
-  ylab("RT (sec)")+
-  #coord_cartesian(ylim=c(0.3,0.9))+
-  ggtitle(paste0("(B) Both RT"))
+        legend.position = "none",
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("反\n應\n時\n間\n(秒)")+
+  xlab(" ")+
+  ggtitle(paste0("(B) 反應時間"))
 
 dk <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = SubjGroup, 
                                color = SubjGroup, shape=SubjGroup)) +
@@ -248,20 +283,20 @@ dk <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = SubjGroup,
   scale_shape_manual(values=c(1,19)) +
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
-        legend.position = "top")
+        legend.position = "right",
+        legend.title=element_blank(),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 60, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))
 
 dk <- g_legend(dk)
 
-pdf("Output/Aov3_DanKyu_Interaction.pdf", width = 7,height = 7)
+tiff(file = "../GoCog_Manuscript/FigureTable/圖6.tiff",height=6, width=7, units="in", res = 300,compression = "lzw")
 grid.arrange(arrangeGrob(bACC,
                          bRT,
                          nrow=2),
-             dk, nrow=2,heights=c(10, 1))
+             dk, nrow=1,widths=c(10, 1))
 dev.off()
-
-
-
-
 
 
 
