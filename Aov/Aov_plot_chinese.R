@@ -48,7 +48,7 @@ GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
   ylab("正\n確\n率\n(%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
-  ggtitle(paste0("(A) 圍棋三階段: 正確率"))
+  ggtitle(paste0("(A) 三階段圍棋題目: 正確率"))
 
 GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
   #scale_colour_grey(start = 0.5, end = 0)+
@@ -158,7 +158,7 @@ GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC,
   ylab("正\n確\n率\n(%)")+
   xlab(" ")+
   coord_cartesian(ylim=c(0.35,0.9))+
-  ggtitle(paste0("(A) 圍棋三階段: 正確率"))
+  ggtitle(paste0("(A) 三階段圍棋題目: 正確率"))
 
 GoStagebRT <- ggplot(data = GoCog,  aes(x = GoStage, y =  Both_RT,
                                         shape = SubjGroup,
