@@ -1,25 +1,13 @@
 
 Error: Subj
-          Df Sum Sq Mean Sq F value Pr(>F)
-Residuals 23   1196   51.99               
+     Df Sum Sq Mean Sq
+Subj 23   1196   51.99
 
-Error: Subj:GoStage
-          Df Sum Sq Mean Sq F value  Pr(>F)    
-GoStage    2  835.4   417.7   23.48 9.4e-08 ***
-Residuals 46  818.4    17.8                    
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Error: Subj:CogTask
-          Df Sum Sq Mean Sq F value Pr(>F)    
-CogTask    3   4232  1410.6   98.26 <2e-16 ***
-Residuals 69    991    14.4                   
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Error: Subj:GoStage:CogTask
-                 Df Sum Sq Mean Sq F value Pr(>F)  
-GoStage:CogTask   6  103.4   17.23   1.886 0.0875 .
-Residuals       138 1261.3    9.14                 
+Error: Within
+                 Df Sum Sq Mean Sq F value Pr(>F)    
+GoStage           2    835   417.7   34.42  6e-14 ***
+CogTask           3   4232  1410.6  116.23 <2e-16 ***
+GoStage:CogTask   6    103    17.2    1.42  0.207    
+Residuals       253   3070    12.1                   
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

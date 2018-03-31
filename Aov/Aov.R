@@ -1,23 +1,99 @@
+library(afex)
+library(dplyr)
+library(reshape2)
 ## Read Data
 GoCog<-read.csv("../GoCogdata/GoCog.csv", h=T)
 GoCog$Subj<-as.factor(GoCog$Subj)
 head(GoCog)
+str(GoCog)
+GoCog$Both_RT <- GoCog$Both_RT/1000
+GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
+GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
 
-# ## Two-Way
-# model <- aov(Cog_RT ~ (GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
-# summary(model)
-# #capture.output(bACC0, file = "Output/aov2_Overall_BothACC.txt")
+########################### Two-Way:ACC ###########################
+model01 <- aov(Both_ACC ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
+summary(model01)
+capture.output(summary(model01), file = "Output/aov2_Overall_BothACC.txt")
+
+#### Simple main effect : given GoStage Open
+dta_Open <- filter(GoCog, GoStage == "Open")
+model01_s_Open <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),
+                 data = dta_Open)
+summary(model01_s_Open)
+model01_s_Open_F <- 0.7195/3/0.0244
+df(model01_s_Open_F,3,253)
+#### t.test
+dta_Open_agg <- aggregate(dta_Open$Both_ACC~dta_Open$CogTask,FUN = mean)
+dta_Open_ttest <- matrix(NA,4,4)
+dta_Open_ttest_p <- matrix(NA,4,4)
+for (i in 1:4){
+  for (j in (i+1):4){
+    dta_Open_ttest[i,j] <- (dta_Open_agg[i,2] - dta_Open_agg[j,2])/0.0244
+    dta_Open_ttest_p[i,j] <- dt((dta_Open_agg[i,2] - dta_Open_agg[j,2])/0.0244,253)
+  }
+}
+colnames(dta_Open_ttest) <- c("None", "Spat", "Reas", "Calc")
+row.names(dta_Open_ttest) <- c("None", "Spat", "Reas", "Calc")
+dta_Open_ttest
+colnames(dta_Open_ttest_p) <- c("None", "Spat", "Reas", "Calc")
+row.names(dta_Open_ttest_p) <- c("None", "Spat", "Reas", "Calc")
+round(dta_Open_ttest_p,4) < 0.05/18
+
+#### Simple main effect : given GoStage Mid
+dta_Mid <- filter(GoCog, GoStage == "Mid")
+model01_s_Mid <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),
+                      data = dta_Mid)
+summary(model01_s_Mid)
+model01_s_Mid_F <- 0.9727/3/0.0244
+df(model01_s_Mid_F,3,253)
+#### t.test
+dta_Mid_agg <- aggregate(dta_Mid$Both_ACC~dta_Mid$CogTask,FUN = mean)
+dta_Mid_ttest <- matrix(NA,4,4)
+dta_Mid_ttest_p <- matrix(NA,4,4)
+for (i in 1:4){
+  for (j in (i+1):4){
+    dta_Mid_ttest[i,j] <- (dta_Mid_agg[i,2] - dta_Mid_agg[j,2])/0.0244
+    dta_Mid_ttest_p[i,j] <- dt((dta_Mid_agg[i,2] - dta_Mid_agg[j,2])/0.0244,253)
+  }
+}
+colnames(dta_Mid_ttest) <- c("None", "Spat", "Reas", "Calc")
+row.names(dta_Mid_ttest) <- c("None", "Spat", "Reas", "Calc")
+dta_Mid_ttest
+colnames(dta_Mid_ttest_p) <- c("None", "Spat", "Reas", "Calc")
+row.names(dta_Mid_ttest_p) <- c("None", "Spat", "Reas", "Calc")
+round(dta_Mid_ttest_p,5) < 0.05/18
+
+#### Simple main effect : given GoStage End
+dta_End <- filter(GoCog, GoStage == "End")
+model01_s_End <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),
+                     data = dta_End)
+summary(model01_s_End)
+model01_s_End_F <- 1.145/3/0.0244
+df(model01_s_End_F,3,253)
+#### t.test
+dta_End_agg <- aggregate(dta_End$Both_ACC~dta_End$CogTask,FUN = mean)
+dta_End_ttest <- matrix(NA,4,4)
+dta_End_ttest_p <- matrix(NA,4,4)
+for (i in 1:4){
+  for (j in (i+1):4){
+    dta_End_ttest[i,j] <- (dta_End_agg[i,2] - dta_End_agg[j,2])/0.0244
+    dta_End_ttest_p[i,j] <- dt((dta_End_agg[i,2] - dta_End_agg[j,2])/0.0244,253)
+  }
+}
+colnames(dta_End_ttest) <- c("None", "Spat", "Reas", "Calc")
+row.names(dta_End_ttest) <- c("None", "Spat", "Reas", "Calc")
+dta_End_ttest
+colnames(dta_End_ttest_p) <- c("None", "Spat", "Reas", "Calc")
+row.names(dta_End_ttest_p) <- c("None", "Spat", "Reas", "Calc")
+round(dta_End_ttest_p,5) < 0.05/18
+
+########################### Two-Way:RT ###########################
+model02 <- aov(Both_RT ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
+summary(model02) 
+capture.output(summary(model02), file = "Output/aov2_Overall_BothRT.txt") 
 
 
-## Two-Way
-model01 <- aov(Both_ACC ~ (GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
-bACC0 <- summary(model01)
-capture.output(bACC0, file = "Output/aov2_Overall_BothACC.txt")
-
-model02 <- aov(Both_RT ~ (GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
-bRT0 <- summary(model02)
-capture.output(bRT0, file = "Output/aov2_Overall_BothRT.txt")
-
+########################### Three-Way:ACC ###########################
 ## three-way ANOVA_Both
 model1 <- aov(Both_ACC ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
 bACC <- summary(model1)
