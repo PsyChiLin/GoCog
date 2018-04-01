@@ -1,24 +1,15 @@
 
 Univariate Type III Repeated-Measures ANOVA Assuming Sphericity
 
-                              SS num Df Error SS den Df        F
-(Intercept)               87.111      1  2.08025     22 921.2582
-SubjGroup                  2.195      1  2.08025     22  23.2113
-GoStage                    0.475      2  0.96566     44  10.8315
-SubjGroup:GoStage          0.071      2  0.96566     44   1.6241
-CogTask                    1.542      3  2.13632     66  15.8833
-SubjGroup:CogTask          0.273      3  2.13632     66   2.8094
-GoStage:CogTask            0.583      6  2.67888    132   4.7881
-SubjGroup:GoStage:CogTask  0.043      6  2.67888    132   0.3566
-                             Pr(>F)    
-(Intercept)               < 2.2e-16 ***
-SubjGroup                 8.197e-05 ***
-GoStage                   0.0001496 ***
-SubjGroup:GoStage         0.2086819    
-CogTask                   7.041e-08 ***
-SubjGroup:CogTask         0.0461994 *  
-GoStage:CogTask           0.0001893 ***
-SubjGroup:GoStage:CogTask 0.9049553    
+                              SS num Df Error SS den Df        F    Pr(>F)    
+(Intercept)               87.111      1  2.08025     22 921.2582 < 2.2e-16 ***
+SubjGroup                  2.195      1  2.08025     22  23.2113 8.197e-05 ***
+GoStage                    0.475      2  0.96566     44  10.8315 0.0001496 ***
+SubjGroup:GoStage          0.071      2  0.96566     44   1.6241 0.2086819    
+CogTask                    1.542      3  2.13632     66  15.8833 7.041e-08 ***
+SubjGroup:CogTask          0.273      3  2.13632     66   2.8094 0.0461994 *  
+GoStage:CogTask            0.583      6  2.67888    132   4.7881 0.0001893 ***
+SubjGroup:GoStage:CogTask  0.043      6  2.67888    132   0.3566 0.9049553    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
