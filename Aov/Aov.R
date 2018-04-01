@@ -91,17 +91,21 @@ round(dta_End_ttest_p,5) < 0.05/18
 model02 <- aov(Both_RT ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
 summary(model02) 
 capture.output(summary(model02), file = "Output/aov2_Overall_BothRT.txt") 
-
-
 ########################### Three-Way:ACC ###########################
 ## three-way ANOVA_Both
-model1 <- aov(Both_ACC ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
-bACC <- summary(model1)
-capture.output(bACC, file = "Output/aov3_BothACC.txt")
+aov3_acc <- aov_ez("Subj", "Both_ACC", GoCog, between = c("SubjGroup"), 
+       within = c("GoStage", "CogTask"), observed = "SubjGroup",
+       anova_table = list(correction = "none"))
+capture.output(summary(aov3_acc), file = "Output/aov3_BothACC.txt")
+summary(aov3_acc)
 
-model2 <- aov(Both_RT ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
-bRT <-summary(model2)
-capture.output(bRT, file = "Output/aov3_BothRT.txt")
+aov3_rt<- aov_ez("Subj", "Both_RT", GoCog, between = c("SubjGroup"), 
+                 within = c("GoStage", "CogTask"), observed = "SubjGroup",
+                 anova_table = list(correction = "none"))
+capture.output(summary(aov3_rt), file = "Output/aov3_BothRT.txt")
+summary(aov3_rt)
+
+
 
 # ## three-way ANOVA_Go
 # model1 <- aov(Go_ACC ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
@@ -112,10 +116,10 @@ capture.output(bRT, file = "Output/aov3_BothRT.txt")
 # a<-summary(model1)
 # capture.output(a, file = "aov_GoRT.txt")
 
-###Tukey
-t<- aov(Both_ACC ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
-TukeyHSD(t$`Subj:GoStage:CogTask`, ordered = TRUE, conf.level = 0.95)
-?TukeyHSD
+# ###Tukey
+# t<- aov(Both_ACC ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)
+# TukeyHSD(t$`Subj:GoStage:CogTask`, ordered = TRUE, conf.level = 0.95)
+# ?TukeyHSD
 
 
 

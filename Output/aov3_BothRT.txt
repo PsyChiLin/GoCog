@@ -1,29 +1,56 @@
 
-Error: Subj
-          Df    Sum Sq  Mean Sq F value Pr(>F)
-SubjGroup  1 4.511e+07 45106153   0.862  0.363
-Residuals 22 1.151e+09 52303731               
+Univariate Type III Repeated-Measures ANOVA Assuming Sphericity
 
-Error: Subj:GoStage
-                  Df    Sum Sq   Mean Sq F value   Pr(>F)    
-GoStage            2 835403826 417701913  22.766 1.63e-07 ***
-SubjGroup:GoStage  2  11122713   5561357   0.303     0.74    
-Residuals         44 807300688  18347743                     
+                             SS num Df Error SS den Df         F
+(Intercept)               67132      1  1150.68     22 1283.4952
+SubjGroup                    45      1  1150.68     22    0.8624
+GoStage                     694      2   807.30     44   18.9003
+SubjGroup:GoStage            11      2   807.30     44    0.3031
+CogTask                    3497      3   946.36     66   81.2887
+SubjGroup:CogTask            44      3   946.36     66    1.0273
+GoStage:CogTask             180      6  1079.54    132    3.6743
+SubjGroup:GoStage:CogTask   182      6  1079.54    132    3.7049
+                             Pr(>F)    
+(Intercept)               < 2.2e-16 ***
+SubjGroup                  0.363149    
+GoStage                   1.189e-06 ***
+SubjGroup:GoStage          0.740049    
+CogTask                   < 2.2e-16 ***
+SubjGroup:CogTask          0.386298    
+GoStage:CogTask            0.002085 ** 
+SubjGroup:GoStage:CogTask  0.001952 ** 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Error: Subj:CogTask
-                  Df    Sum Sq   Mean Sq F value Pr(>F)    
-CogTask            3 4.232e+09 1.411e+09  98.373 <2e-16 ***
-SubjGroup:CogTask  3 4.419e+07 1.473e+07   1.027  0.386    
-Residuals         66 9.464e+08 1.434e+07                   
+
+Mauchly Tests for Sphericity
+
+                          Test statistic  p-value
+GoStage                          0.70290 0.024682
+SubjGroup:GoStage                0.70290 0.024682
+CogTask                          0.40811 0.002344
+SubjGroup:CogTask                0.40811 0.002344
+GoStage:CogTask                  0.19494 0.041962
+SubjGroup:GoStage:CogTask        0.19494 0.041962
+
+
+Greenhouse-Geisser and Huynh-Feldt Corrections
+ for Departure from Sphericity
+
+                           GG eps Pr(>F[GG])    
+GoStage                   0.77095  1.382e-05 ***
+SubjGroup:GoStage         0.77095   0.683434    
+CogTask                   0.71076  2.222e-16 ***
+SubjGroup:CogTask         0.71076   0.369838    
+GoStage:CogTask           0.64131   0.009070 ** 
+SubjGroup:GoStage:CogTask 0.64131   0.008673 ** 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Error: Subj:GoStage:CogTask
-                           Df    Sum Sq  Mean Sq F value  Pr(>F)   
-GoStage:CogTask             6 1.034e+08 17234002   2.107 0.05652 . 
-SubjGroup:GoStage:CogTask   6 1.818e+08 30299616   3.705 0.00195 **
-Residuals                 132 1.080e+09  8178333                   
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+                             HF eps   Pr(>F[HF])
+GoStage                   0.8178608 8.352570e-06
+SubjGroup:GoStage         0.8178608 6.964231e-01
+CogTask                   0.7892568 6.107405e-18
+SubjGroup:CogTask         0.7892568 3.752297e-01
+GoStage:CogTask           0.7942167 4.820567e-03
+SubjGroup:GoStage:CogTask 0.7942167 4.568391e-03
