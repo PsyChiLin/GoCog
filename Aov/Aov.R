@@ -11,6 +11,9 @@ GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
 GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
 
 ########################### Two-Way:ACC ###########################
+
+### Type 3, 
+
 model01 <- aov(Both_ACC ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
 summary(model01)
 capture.output(summary(model01), file = "Output/aov2_Overall_BothACC.txt")
