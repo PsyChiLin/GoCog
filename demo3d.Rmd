@@ -1,0 +1,62 @@
+---
+title: "Demo 3D"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Go Stage
+##### 3 Stages: "Open","Mid", & "End" (and Error)
+```{r GoStage,echo=FALSE,message=FALSE,warning=FALSE}
+library(psych)
+library(plotly)
+dta_3s_rst <- readRDS("../GoCogdata/dta_3s_rst.Rdata")
+# PCA
+rst_pca <- prcomp(x = dta_3s_rst[5:12],center = TRUE,scale. = TRUE)
+#summary(rst_pca)
+# 3d plot
+dta_3s_rst[,14:16] <- predict(rst_pca, newdata=dta_3s_rst)
+#head(dta_3s_rst)
+colnames(dta_3s_rst)[14:16] <- c("PC1","PC2","PC3")
+dta_3s_rst$TF <- ifelse(dta_3s_rst$GoStage == dta_3s_rst$pred_GoStage,
+                        as.character(dta_3s_rst$GoStage),"Error")
+dta_3s_rst$TF <- factor(dta_3s_rst$TF, levels = c("Open","Mid","End","Error"))
+
+# plotly (dynamic)
+p <- plot_ly(dta_3s_rst, x = ~PC1, y = ~PC2, z = ~PC3, color = ~TF,
+             colors = c('red', 'green',"blue","grey")) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = ' ',showticklabels  = F),
+                      yaxis = list(title = ' ',showticklabels  = F),
+                      zaxis = list(title = ' ',showticklabels  = F)))
+p
+```
+
+### Cog Task 
+##### 4 Tasks: "None","Spat","Reas" & "Calc" (and Error)
+```{r cogtask, echo=FALSE,message=FALSE,warning=FALSE}
+library(psych)
+library(plotly)
+dta_4c_rst <- readRDS("../GoCogdata/dta_4c_rst.Rdata")
+# PCA
+rst_pca <- prcomp(x = dta_4c_rst[5:10],center = TRUE,scale. = TRUE)
+#summary(rst_pca)
+# 3d plot
+dta_4c_rst[,12:14] <- predict(rst_pca, newdata=dta_4c_rst)
+#head(dta_4c_rst)
+colnames(dta_4c_rst)[12:14] <- c("PC1","PC2","PC3")
+dta_4c_rst$TF <- ifelse(dta_4c_rst$CogTask == dta_4c_rst$pred_CogTask,
+                        as.character(dta_4c_rst$CogTask),"Error")
+dta_4c_rst$TF <- factor(dta_4c_rst$TF, levels = c("None","Spat","Reas","Calc","Error"))
+
+# plotly (dynamic)
+p <- plot_ly(dta_4c_rst, x = ~PC1, y = ~PC2, z = ~PC3, color = ~TF,
+             colors = c("yellow",'red', 'green',"blue","grey")) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = ' ',showticklabels  = F),
+                      yaxis = list(title = ' ',showticklabels  = F),
+                      zaxis = list(title = ' ',showticklabels  = F)))
+p
+```
+
