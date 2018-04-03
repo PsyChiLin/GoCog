@@ -47,6 +47,13 @@ dta_3s_Mid  <- dta_3s_Mid[sample(nrow(dta_3s_Mid)),]
 dta_3s_End <- dta_3s_End[sample(nrow(dta_3s_End)),]
 # bind data
 dta_3s_new <- rbind(dta_3s_Open,dta_3s_Mid,dta_3s_End)
+row.names(dta_3s_new) <- 1:dim(dta_3s_new)[1]
+dta_3s_rst <- rbind(dta_3s_Open,dta_3s_Mid,dta_3s_End)
+dta_3s_rst$pred_GoStage <- NA
+dta_3s_rst$pred_GoStage <- as.factor(dta_3s_rst$pred_GoStage)
+dta_3s_rst$pred_GoStage <- factor(dta_3s_rst$pred_GoStage,levels = c("End","Mid","Open"))
+row.names(dta_3s_rst) <- 1:dim(dta_3s_rst)[1]
+#head(dta_3s_rst)
 # 8 folds
 folds <- rep(rep(1:8,3),3)
 # 4 columns : all, open, mid, end
@@ -70,6 +77,8 @@ for(i in 1:8){
   y_test_hat <- predict(rst_forests,testData,type="response")
   ce_train <- mean(y_train_hat!=trainData$GoStage, na.rm = T)
   ce_test <- mean(y_test_hat!=testData$GoStage, na.rm = T)
+  # for 3d plot
+  dta_3s_rst[testIndexes,]$pred_GoStage <- y_test_hat
   # 4 column : all, open, mid, end
   rst$train[i,1] <- ce_train 
   rst$test[i,1] <- ce_test
@@ -225,6 +234,7 @@ for(i in 1:8){
   y_train_hat <- predict(rst_forests,trainData,type="response")
   y_test_prob_tree <- predict(rst_forests,testData ,type="prob")[,2]
   y_test_hat <- predict(rst_forests,testData,type="response")
+  
   ce_train <- mean(y_train_hat!=trainData$GoStage, na.rm = T)
   ce_test <- mean(y_test_hat!=testData$GoStage, na.rm = T)
   rst$train[i,1] <- ce_train 
@@ -273,7 +283,8 @@ RF_GoStage[3,5] <- mean(rst$test[,4])
 RF_GoStage
 saveRDS(RF_GoStage,file = "Output/GoStage_bACCbRT_RF_Rst.Rdata")
 
-
+head(dta_3s_rst) 
+saveRDS(dta_3s_rst,file = "../GoCogdata/dta_3s_rst.Rdata")
 
 
 

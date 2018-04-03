@@ -52,6 +52,13 @@ dta_4c_Spat <- dta_4c_Spat[sample(nrow(dta_4c_Spat)),]
 dta_4c_None <- dta_4c_None[sample(nrow(dta_4c_None)),]
 # bind data
 dta_4c_new <- rbind(dta_4c_Calc,dta_4c_Reas,dta_4c_Spat,dta_4c_None)
+row.names(dta_4c_new) <- 1:dim(dta_4c_new)[1]
+# for 3d plot
+dta_4c_rst <- rbind(dta_4c_Calc,dta_4c_Reas,dta_4c_Spat,dta_4c_None)
+dta_4c_rst$pred_CogTask <- NA
+dta_4c_rst$pred_CogTask <- as.factor(dta_4c_rs$pred_CogTask)
+dta_4c_rst$pred_CogTask <- factor(dta_4c_rst$pred_CogTask,levels = c("Calc","None","Reas","Spat"))
+row.names(dta_4c_rst) <- 1:dim(dta_4c_rst)[1]
 # 8 folds
 folds <- rep(rep(1:8,3),4)
 
@@ -77,6 +84,8 @@ for(i in 1:8){
   ce_test <- mean(y_test_hat!=testData$CogTask, na.rm = T)
   rst$train[i,1] <- ce_train 
   rst$test[i,1] <- ce_test
+  # for 3d plot
+  dta_4c_rst[testIndexes,]$pred_CogTask <- y_test_hat
   # Calc
   Calc_train <- filter(trainData, CogTask == "Calc")
   Calc_test <- filter(testData, CogTask == "Calc")
@@ -328,5 +337,6 @@ RF_CogTask[3,6] <- mean(rst$test[,5])
 
 RF_CogTask
 saveRDS(RF_CogTask,file = "Output/CogTask_bACCbRT_RF_Rst.Rdata")
-
+head(dta_4c_rst)
+saveRDS(dta_4c_rst,file = "../GoCogdata/dta_4c_rst.Rdata")
 
