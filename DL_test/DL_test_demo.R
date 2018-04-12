@@ -1,0 +1,111 @@
+#install.packages("keras")
+#library(keras)
+#install_keras()
+
+library(keras)
+mnist <- dataset_mnist()
+x_train <- mnist$train$x
+y_train <- mnist$train$y
+x_test <- mnist$test$x
+y_test <- mnist$test$y
+# reshape
+x_train <- array_reshape(x_train, c(nrow(x_train), 784))
+x_test <- array_reshape(x_test, c(nrow(x_test), 784))
+# rescale
+x_train <- x_train / 255
+x_test <- x_test / 255
+
+y_train <- to_categorical(y_train, 10)
+y_test <- to_categorical(y_test, 10)
+
+
+model <- keras_model_sequential() 
+model %>% 
+  layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>% 
+  layer_dropout(rate = 0.4) %>% 
+  layer_dense(units = 128, activation = 'relu') %>%
+  layer_dropout(rate = 0.3) %>%
+  layer_dense(units = 10, activation = 'softmax')
+
+model %>% compile(
+  loss = 'categorical_crossentropy',
+  optimizer = optimizer_rmsprop(),
+  metrics = c('accuracy')
+)
+
+history <- model %>% fit(
+  x_train, y_train, 
+  epochs = 30, batch_size = 128, 
+  validation_split = 0.2
+)
+
+
+model %>% evaluate(x_train, x_train)
+
+
+
+
+
+
+
+model <- keras_model_sequential() 
+model %>% 
+  layer_dense(units = 32, activation = 'relu', input_shape = c(8)) %>% 
+  layer_dropout(rate = 0.4) %>% 
+  layer_dense(units = 32, activation = 'relu') %>%
+  layer_dropout(rate = 0.3) %>%
+  layer_dense(units = 3, activation = 'softmax')
+
+
+model %>% compile(
+  loss = 'categorical_crossentropy',
+  optimizer = optimizer_rmsprop(),
+  metrics = c('accuracy')
+)
+
+history <- model %>% fit(
+  x_train, y_train, 
+  epochs = 3, batch_size = 72, 
+  validation_split = 0.3
+)
+
+#plot(history)
+
+model %>% evaluate(x_train, y_train)
+
+model %>% predict_classes(x_test)
+
+
+
+
+
+
+
+
+
+# create model
+model <- keras_model_sequential()
+
+# define and compile the model
+model %>% 
+  layer_dense(units = 64, activation = 'relu', input_shape = c(8)) %>% 
+  layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dropout(rate = 0.5) %>% 
+  layer_dense(units = 3, activation = 'softmax') %>% 
+  compile(
+    loss = 'categorical_crossentropy',
+    optimizer = optimizer_sgd(lr = 0.01, decay = 1e-6, momentum = 0.9, nesterov = TRUE),
+    metrics = c('accuracy')     
+  )
+
+# train
+model %>% fit(x_train, y_train, epochs = 20, batch_size = 128)
+
+
+
+
+
+
+
+
