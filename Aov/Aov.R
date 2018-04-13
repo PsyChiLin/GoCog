@@ -22,6 +22,8 @@ summary(aov2way)
 # summary(model01)
 # capture.output(summary(model01), file = "Output/aov2_Overall_BothACC.txt")
 
+
+########################### Simple main effect: Given Go Stage ###########################
 #### Simple main effect : given GoStage Open
 dta_Open <- filter(GoCog, GoStage == "Open")
 aov2way_s_Open <- aov_4(Both_ACC ~ Subj + (CogTask|Subj),
@@ -31,7 +33,7 @@ aov2way_s_Open
 summary(aov2way_s_Open)
 model01_s_Open_F <-  7195/3/349.15 #aov2way$anova_table : exact 0.034915
 model01_s_Open_F
-df(model01_s_Open_F,3,69)
+pf(model01_s_Open_F,3,69,lower.tail = F)
 #### t.test
 dta_Open_agg <- aggregate(dta_Open$Both_ACC~dta_Open$CogTask,FUN = mean)
 dta_Open_ttest <- matrix(NA,4,4)
@@ -48,7 +50,7 @@ dta_Open_ttest
 colnames(dta_Open_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 row.names(dta_Open_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 round(dta_Open_ttest_p,5)
-round(dta_Open_ttest_p,5) < 0.05/6
+round(dta_Open_ttest_p,5) < 0.05/9 # 3*3 
 
 #### Simple main effect : given GoStage Mid
 dta_Mid <- filter(GoCog, GoStage == "Mid")
@@ -58,7 +60,7 @@ aov2way_s_Mid
 summary(aov2way_s_Mid)
 model01_s_Mid_F <- 9727/3/349.15
 model01_s_Mid_F 
-df(model01_s_Mid_F,3,69)
+pf(model01_s_Mid_F,3,69,lower.tail = F)
 #### t.test
 dta_Mid_agg <- aggregate(dta_Mid$Both_ACC~dta_Mid$CogTask,FUN = mean)
 dta_Mid_ttest <- matrix(NA,4,4)
@@ -75,7 +77,7 @@ dta_Mid_ttest
 colnames(dta_Mid_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 row.names(dta_Mid_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 round(dta_Mid_ttest_p,5)
-round(dta_Mid_ttest_p,5) < 0.05/6
+round(dta_Mid_ttest_p,5) < 0.05/9
 
 #### Simple main effect : given GoStage End
 dta_End <- filter(GoCog, GoStage == "End")
@@ -86,7 +88,7 @@ aov2way_s_End
 summary(aov2way_s_End)
 model01_s_End_F <- 11454/3/349.15
 model01_s_End_F 
-df(model01_s_End_F,3,69)
+pf(model01_s_End_F,3,69,lower.tail = F)
 #### t.test
 dta_End_agg <- aggregate(dta_End$Both_ACC~dta_End$CogTask,FUN = mean)
 dta_End_ttest <- matrix(NA,4,4)
@@ -103,13 +105,20 @@ dta_End_ttest
 colnames(dta_End_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 row.names(dta_End_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 round(dta_End_ttest_p,5)
-round(dta_End_ttest_p,5) < 0.05/6
+round(dta_End_ttest_p,5) < 0.05/9
+
+
+########################### Simple main effect: Given Cog Task ###########################
+
 
 ########################### Two-Way:RT ###########################
-model02 <- aov(Both_RT ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
-summary(model02) 
-capture.output(summary(model02), file = "Output/aov2_Overall_BothRT.txt") 
-
+aov2wayRT <- aov_4(Both_RT~(GoStage*CogTask|Subj),data = GoCog,
+                 anova_table=list(correction = "none"))
+aov2wayRT
+summary(aov2wayRT)
+# model02 <- aov(Both_RT ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
+# summary(model02) 
+# capture.output(summary(model02), file = "Output/aov2_Overall_BothRT.txt") 
 ########################### 3-Way:ACC ###########################
 ## three-way ANOVA_Both
 aov3_acc <- aov_ez("Subj", "Both_ACC", GoCog, between = c("SubjGroup"), 

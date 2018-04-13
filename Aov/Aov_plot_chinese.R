@@ -181,8 +181,7 @@ grid.arrange(GoStagebACC,GoStagebRT,
              CogTaskbACC,CogTaskbRT,ncol = 2)
 dev.off()
 
-
-## Interaction Plot
+## Interaction Plot: Type1
 GoCog$GoStage <- factor(GoCog$GoStage, labels = c("佈局","中盤","官子"))
 bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = GoStage)) +
   scale_colour_grey(start = 0.5, end = 0)+
@@ -262,14 +261,50 @@ grid.arrange(bACC,bRT,ncol =1)
 dev.off()
 
 
+## Interaction Plot: Type2
+GoCog$CogTask <- factor(GoCog$CogTask, labels = c("無干擾","空間干擾","推理干擾","計算干擾"))
+GoCog$GoStage <- factor(GoCog$GoStage,labels = c("佈\n局","中\n盤","官\n子"))
+bACC <- ggplot(data = GoCog, aes(x = GoStage, y = Both_ACC, group = CogTask)) +
+  scale_colour_grey(start = 0.5, end = 0)+
+  facet_grid(.~CogTask) +
+  stat_summary(fun.y = mean, geom = "point", size = 2, shape = 19) +
+  stat_summary(fun.y = mean, geom = "line") +
+  stat_summary(fun.data = mean_se, geom = "errorbar",
+               linetype = "solid", width = .2) +
+  theme_default()+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("正\n確\n率\n(%)")+
+  xlab(" ")+
+  #coord_cartesian(ylim=c(0.3,90))+
+  ggtitle(paste0("(A) 正確率"))
 
+bRT <- ggplot(data = GoCog, aes(x = GoStage, y = Both_RT, group = CogTask)) +
+  scale_colour_grey(start = 0.5, end = 0)+
+  facet_grid(.~CogTask) +
+  stat_summary(fun.y = mean, geom = "point", size = 2,shape = 1, col = "#666666") +
+  stat_summary(fun.y = mean, geom = "line", col = "#666666") +
+  stat_summary(fun.data = mean_se, geom = "errorbar",
+               linetype = "solid", width = .2, col = "#666666") +
+  theme_default()+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
+  ylab("反\n應\n時\n間\n(秒)")+
+  xlab(" ")+
+  #ggtitle(paste0("(D) 總反應時間"))+
+  ggtitle(paste0("(B) 反應時間"))
 
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖4.tiff",height=12, width=6, units="in", res = 300,compression = "lzw")
+# grid.arrange(bACC,GRT,CRT,bRT,ncol =1)
+# dev.off()
 
-
-
-
-
-
+tiff(file = "../GoCog_Manuscript/FigureTable/S1.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+grid.arrange(bACC,bRT,ncol =1)
+dev.off()
 
 
 
