@@ -110,6 +110,59 @@ round(dta_End_ttest_p,5) < 0.05/9
 
 ########################### Simple main effect: Given Cog Task ###########################
 
+#### Simple main effect : given Cog None
+dta_None <- filter(GoCog, CogTask == "None")
+aov2way_s_None <- aov_4(Both_ACC ~ Subj + (GoStage|Subj),
+                        data = dta_None,anova_table=list(correction = "none"))
+aov2way_s_None
+summary(aov2way_s_None)
+model01_s_None_F <- 1430/3/225.42 #aov2way$anova_table : exact 0.034915
+model01_s_None_F
+pf(model01_s_None_F,2,46,lower.tail = FALSE)
+
+#### Simple main effect : given Cog Spat
+dta_Spat <- filter(GoCog, CogTask == "Spat")
+aov2way_s_Spat <- aov_4(Both_ACC ~ Subj + (GoStage|Subj),data = dta_Spat,anova_table=list(correction = "none"))
+aov2way_s_Spat 
+summary(aov2way_s_Spat)
+model01_s_Spat_F <-  9067/3/225.42
+model01_s_Spat_F 
+pf(model01_s_Spat_F,2,46,lower.tail = F)
+#### t.test
+dta_Spat_agg <- aggregate(dta_Spat$Both_ACC~dta_Spat$GoStage,FUN = mean)
+dta_Spat_ttest <- matrix(NA,3,3)
+dta_Spat_ttest_p <- matrix(NA,3,3)
+for (i in 1:3){
+  for (j in (i+1):3){
+    dta_Spat_ttest[i,j] <- (dta_Spat_agg[i,2] - dta_Spat_agg[j,2])/sqrt(225.42*2/24)
+    dta_Spat_ttest_p[i,j] <- 2*pt(abs(dta_Spat_ttest[i,j]),46,lower.tail = F)
+  }
+}
+colnames(dta_Spat_ttest) <- c("Open", "Mid", "Reas")
+row.names(dta_Spat_ttest) <- c("Open", "Mid", "Reas")
+dta_Spat_ttest
+colnames(dta_Spat_ttest_p) <- c("Open", "Mid", "Reas")
+row.names(dta_Spat_ttest_p) <- c("Open", "Mid", "Reas")
+round(dta_Spat_ttest_p,5)
+round(dta_Spat_ttest_p,5) < 0.05/12
+
+#### Simple main effect : given GoStage Reas
+dta_Reas <- filter(GoCog, CogTask == "Reas")
+aov2way_s_Reas <- aov_4(Both_ACC ~ Subj + (GoStage|Subj),data = dta_Reas,anova_table=list(correction = "none"))
+aov2way_s_Reas
+summary(aov2way_s_Reas)
+model01_s_Reas_F <-  590 /3/225.42
+model01_s_Reas_F 
+df(model01_s_Reas_F,3,46)
+
+#### Simple main effect : given GoStage Calc
+dta_Calc <- filter(GoCog, CogTask == "Calc")
+aov2way_s_Calc <- aov_4(Both_ACC ~ Subj + (GoStage|Subj),data = dta_Calc,anova_table=list(correction = "none"))
+aov2way_s_Calc
+summary(aov2way_s_Calc)
+model01_s_Calc_F <-  2184/3/225.42
+model01_s_Calc_F 
+df(model01_s_Calc_F,3,46)
 
 ########################### Two-Way:RT ###########################
 aov2wayRT <- aov_4(Both_RT~(GoStage*CogTask|Subj),data = GoCog,
