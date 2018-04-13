@@ -2,37 +2,44 @@ library(afex)
 library(dplyr)
 library(reshape2)
 ## Read Data
-GoCog<-read.csv("../GoCogdata/GoCog.csv", h=T)
+#GoCog<-read.csv("../GoCogdata/GoCog.csv", h=T)
+GoCog<-read.csv("../GoCogdata/GoCog_20180404.csv", h=T)[,1:7]
 GoCog$Subj<-as.factor(GoCog$Subj)
+colnames(GoCog)[6] <- "Both_ACC"
 head(GoCog)
 str(GoCog)
 GoCog$Both_RT <- GoCog$Both_RT/1000
+GoCog$Both_ACC <- GoCog$Both_ACC*100
 GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
 GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
 
 ########################### Two-Way:ACC ###########################
-
-### Type 3, 
-
-model01 <- aov(Both_ACC ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
-summary(model01)
-capture.output(summary(model01), file = "Output/aov2_Overall_BothACC.txt")
+aov2way <- aov_4(Both_ACC~(GoStage*CogTask|Subj),data = GoCog,
+                 anova_table=list(correction = "none"))
+aov2way
+summary(aov2way)
+# model01 <- aov(Both_ACC ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
+# summary(model01)
+# capture.output(summary(model01), file = "Output/aov2_Overall_BothACC.txt")
 
 #### Simple main effect : given GoStage Open
 dta_Open <- filter(GoCog, GoStage == "Open")
-model01_s_Open <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),
-                 data = dta_Open)
-summary(model01_s_Open)
-model01_s_Open_F <- 0.7195/3/0.0244
-df(model01_s_Open_F,3,253)
+aov2way_s_Open <- aov_4(Both_ACC ~ Subj + (CogTask|Subj),
+                      data = dta_Open,anova_table=list(correction = "none"))
+#model01_s_Open <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),data = dta_Open)
+aov2way_s_Open
+summary(aov2way_s_Open)
+model01_s_Open_F <-  7195/3/349.15 #aov2way$anova_table : exact 0.034915
+model01_s_Open_F
+df(model01_s_Open_F,3,69)
 #### t.test
 dta_Open_agg <- aggregate(dta_Open$Both_ACC~dta_Open$CogTask,FUN = mean)
 dta_Open_ttest <- matrix(NA,4,4)
 dta_Open_ttest_p <- matrix(NA,4,4)
 for (i in 1:4){
   for (j in (i+1):4){
-    dta_Open_ttest[i,j] <- (dta_Open_agg[i,2] - dta_Open_agg[j,2])/0.0244
-    dta_Open_ttest_p[i,j] <- dt((dta_Open_agg[i,2] - dta_Open_agg[j,2])/0.0244,253)
+    dta_Open_ttest[i,j] <- (dta_Open_agg[i,2] - dta_Open_agg[j,2])/sqrt(349.15*2/24)
+    dta_Open_ttest_p[i,j] <- 2*pt(abs(dta_Open_ttest[i,j]),69,lower.tail = F)
   }
 }
 colnames(dta_Open_ttest) <- c("None", "Spat", "Reas", "Calc")
@@ -40,23 +47,26 @@ row.names(dta_Open_ttest) <- c("None", "Spat", "Reas", "Calc")
 dta_Open_ttest
 colnames(dta_Open_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 row.names(dta_Open_ttest_p) <- c("None", "Spat", "Reas", "Calc")
-round(dta_Open_ttest_p,4) < 0.05/18
+round(dta_Open_ttest_p,5)
+round(dta_Open_ttest_p,5) < 0.05/6
 
 #### Simple main effect : given GoStage Mid
 dta_Mid <- filter(GoCog, GoStage == "Mid")
-model01_s_Mid <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),
-                      data = dta_Mid)
-summary(model01_s_Mid)
-model01_s_Mid_F <- 0.9727/3/0.0244
-df(model01_s_Mid_F,3,253)
+aov2way_s_Mid <- aov_4(Both_ACC ~ Subj + (CogTask|Subj),data = dta_Mid,anova_table=list(correction = "none"))
+#model01_s_Mid <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),data = dta_Mid)
+aov2way_s_Mid 
+summary(aov2way_s_Mid)
+model01_s_Mid_F <- 9727/3/349.15
+model01_s_Mid_F 
+df(model01_s_Mid_F,3,69)
 #### t.test
 dta_Mid_agg <- aggregate(dta_Mid$Both_ACC~dta_Mid$CogTask,FUN = mean)
 dta_Mid_ttest <- matrix(NA,4,4)
 dta_Mid_ttest_p <- matrix(NA,4,4)
 for (i in 1:4){
   for (j in (i+1):4){
-    dta_Mid_ttest[i,j] <- (dta_Mid_agg[i,2] - dta_Mid_agg[j,2])/0.0244
-    dta_Mid_ttest_p[i,j] <- dt((dta_Mid_agg[i,2] - dta_Mid_agg[j,2])/0.0244,253)
+    dta_Mid_ttest[i,j] <- (dta_Mid_agg[i,2] - dta_Mid_agg[j,2])/sqrt(349.15*2/24)
+    dta_Mid_ttest_p[i,j] <- 2*pt(abs(dta_Mid_ttest[i,j]),69,lower.tail = F)
   }
 }
 colnames(dta_Mid_ttest) <- c("None", "Spat", "Reas", "Calc")
@@ -64,23 +74,27 @@ row.names(dta_Mid_ttest) <- c("None", "Spat", "Reas", "Calc")
 dta_Mid_ttest
 colnames(dta_Mid_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 row.names(dta_Mid_ttest_p) <- c("None", "Spat", "Reas", "Calc")
-round(dta_Mid_ttest_p,5) < 0.05/18
+round(dta_Mid_ttest_p,5)
+round(dta_Mid_ttest_p,5) < 0.05/6
 
 #### Simple main effect : given GoStage End
 dta_End <- filter(GoCog, GoStage == "End")
-model01_s_End <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),
-                     data = dta_End)
-summary(model01_s_End)
-model01_s_End_F <- 1.145/3/0.0244
-df(model01_s_End_F,3,253)
+aov2way_s_End <- aov_4(Both_ACC ~ Subj + (CogTask|Subj),data = dta_End,anova_table=list(correction = "none"))
+#model01_s_End <- aov(Both_ACC ~ Subj + CogTask + Error(Subj),data = dta_End)
+#summary(model01_s_End)
+aov2way_s_End
+summary(aov2way_s_End)
+model01_s_End_F <- 11454/3/349.15
+model01_s_End_F 
+df(model01_s_End_F,3,69)
 #### t.test
 dta_End_agg <- aggregate(dta_End$Both_ACC~dta_End$CogTask,FUN = mean)
 dta_End_ttest <- matrix(NA,4,4)
 dta_End_ttest_p <- matrix(NA,4,4)
 for (i in 1:4){
   for (j in (i+1):4){
-    dta_End_ttest[i,j] <- (dta_End_agg[i,2] - dta_End_agg[j,2])/0.0244
-    dta_End_ttest_p[i,j] <- dt((dta_End_agg[i,2] - dta_End_agg[j,2])/0.0244,253)
+    dta_End_ttest[i,j] <- (dta_End_agg[i,2] - dta_End_agg[j,2])/sqrt(349.15*2/24)
+    dta_End_ttest_p[i,j] <- 2*pt(abs(dta_End_ttest[i,j]),69,lower.tail = F)
   }
 }
 colnames(dta_End_ttest) <- c("None", "Spat", "Reas", "Calc")
@@ -88,7 +102,8 @@ row.names(dta_End_ttest) <- c("None", "Spat", "Reas", "Calc")
 dta_End_ttest
 colnames(dta_End_ttest_p) <- c("None", "Spat", "Reas", "Calc")
 row.names(dta_End_ttest_p) <- c("None", "Spat", "Reas", "Calc")
-round(dta_End_ttest_p,5) < 0.05/18
+round(dta_End_ttest_p,5)
+round(dta_End_ttest_p,5) < 0.05/6
 
 ########################### Two-Way:RT ###########################
 model02 <- aov(Both_RT ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
