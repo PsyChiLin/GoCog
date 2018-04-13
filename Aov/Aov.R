@@ -151,18 +151,18 @@ dta_Reas <- filter(GoCog, CogTask == "Reas")
 aov2way_s_Reas <- aov_4(Both_ACC ~ Subj + (GoStage|Subj),data = dta_Reas,anova_table=list(correction = "none"))
 aov2way_s_Reas
 summary(aov2way_s_Reas)
-model01_s_Reas_F <-  590 /3/225.42
+model01_s_Reas_F <-  590/2/225.42
 model01_s_Reas_F 
-df(model01_s_Reas_F,3,46)
+df(model01_s_Reas_F,2,46)
 
 #### Simple main effect : given GoStage Calc
 dta_Calc <- filter(GoCog, CogTask == "Calc")
 aov2way_s_Calc <- aov_4(Both_ACC ~ Subj + (GoStage|Subj),data = dta_Calc,anova_table=list(correction = "none"))
 aov2way_s_Calc
 summary(aov2way_s_Calc)
-model01_s_Calc_F <-  2184/3/225.42
+model01_s_Calc_F <-  2184/2/225.42
 model01_s_Calc_F 
-df(model01_s_Calc_F,3,46)
+df(model01_s_Calc_F,2,46)
 
 ########################### Two-Way:RT ###########################
 aov2wayRT <- aov_4(Both_RT~(GoStage*CogTask|Subj),data = GoCog,
@@ -186,9 +186,6 @@ aov3_rt<- aov_ez("Subj", "Both_RT", GoCog, between = c("SubjGroup"),
                  anova_table = list(correction = "none"))
 capture.output(summary(aov3_rt), file = "Output/aov3_BothRT.txt")
 summary(aov3_rt)
-
-
-
 
 # ## three-way ANOVA_Go
 # model1 <- aov(Go_ACC ~ (SubjGroup*GoStage*CogTask) + Error(Subj/(GoStage*CogTask)), data=GoCog)

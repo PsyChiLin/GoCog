@@ -9,6 +9,7 @@ library(pROC)
 library(ggplot2)
 library(grid)
 library(gridExtra)
+library(ggsignif)
 
 rm(list = ls())
 theme_default <- function(base_size = 12, base_family = ""){
@@ -197,8 +198,36 @@ bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = GoStage)) +
         text = element_text(family = 'BiauKai'))+
   ylab("正\n確\n率\n(%)")+
   xlab(" ")+
-  #coord_cartesian(ylim=c(0.3,90))+
-  ggtitle(paste0("(A) 正確率"))
+  coord_cartesian(ylim=c(35,100))+
+  ggtitle(paste0("(A) 給定一圍棋階段探討四種認知干擾之差異分析"))
+annotation_df <- data.frame(GoStage=c("佈局","中盤","官子"), 
+                           start=c("無\n干\n擾","無\n干\n擾","無\n干\n擾"), 
+                           end=c("空\n間\n干\n擾","空\n間\n干\n擾","空\n間\n干\n擾"),
+                           y=c(85,85,85),
+                           label=c("*", "NS.", "NS."))
+annotation_df2 <- data.frame(GoStage=c("佈局","中盤","官子"), 
+                            start=c("無\n干\n擾","無\n干\n擾","無\n干\n擾"), 
+                            end=c("推\n理\n干\n擾","推\n理\n干\n擾","推\n理\n干\n擾"),
+                            y=c(90,90,90),
+                            label=c("NS.", "*", "*"))
+annotation_df3 <- data.frame(GoStage=c("佈局","中盤","官子"), 
+                             start=c("無\n干\n擾","無\n干\n擾","無\n干\n擾"), 
+                             end=c("計\n算\n干\n擾","計\n算\n干\n擾","計\n算\n干\n擾"),
+                             y=c(95,95,95),
+                             label=c("NS.", "NS.", "NS."))
+bACC <- bACC+geom_signif(data=annotation_df,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+                 textsize = 3, vjust = 0,manual=TRUE)+
+  geom_signif(data=annotation_df2,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+              textsize = 3, vjust = 0,manual=TRUE)+
+  geom_signif(data=annotation_df3,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+              textsize = 3, vjust = 0,manual=TRUE)
+
+
+
+
+
+
+
 
 # #BothRT(by Stage)
 # GRT <- ggplot(data = GoCog, aes(x = CogTask, y = Go_RT, group = GoStage)) +
@@ -238,35 +267,10 @@ bACC <- ggplot(data = GoCog, aes(x = CogTask, y = Both_ACC, group = GoStage)) +
 bRT <- ggplot(data = GoCog, aes(x = CogTask, y = Both_RT, group = GoStage)) +
   scale_colour_grey(start = 0.5, end = 0)+
   facet_grid(.~GoStage) +
-  stat_summary(fun.y = mean, geom = "point", size = 2,shape = 1, col = "#666666") +
-  stat_summary(fun.y = mean, geom = "line", col = "#666666") +
-  stat_summary(fun.data = mean_se, geom = "errorbar",
-               linetype = "solid", width = .2, col = "#666666") +
-  theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),
-        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
-        axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8),
-        text = element_text(family = 'BiauKai'))+
-  ylab("反\n應\n時\n間\n(秒)")+
-  xlab(" ")+
-  #ggtitle(paste0("(D) 總反應時間"))+
-  ggtitle(paste0("(B) 反應時間"))
-
-# tiff(file = "../GoCog_Manuscript/FigureTable/圖4.tiff",height=12, width=6, units="in", res = 300,compression = "lzw")
-# grid.arrange(bACC,GRT,CRT,bRT,ncol =1)
-# dev.off()
-
-tiff(file = "../GoCog_Manuscript/FigureTable/圖4.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
-grid.arrange(bACC,bRT,ncol =1)
-dev.off()
-
-
-## Interaction Plot: Type2
-GoCog$CogTask <- factor(GoCog$CogTask, labels = c("無干擾","空間干擾","推理干擾","計算干擾"))
-GoCog$GoStage <- factor(GoCog$GoStage,labels = c("佈\n局","中\n盤","官\n子"))
-bACC <- ggplot(data = GoCog, aes(x = GoStage, y = Both_ACC, group = CogTask)) +
-  scale_colour_grey(start = 0.5, end = 0)+
-  facet_grid(.~CogTask) +
+  # stat_summary(fun.y = mean, geom = "point", size = 2,shape = 1, col = "#666666") +
+  # stat_summary(fun.y = mean, geom = "line", col = "#666666") +
+  # stat_summary(fun.data = mean_se, geom = "errorbar",
+  #              linetype = "solid", width = .2, col = "#666666") +
   stat_summary(fun.y = mean, geom = "point", size = 2, shape = 19) +
   stat_summary(fun.y = mean, geom = "line") +
   stat_summary(fun.data = mean_se, geom = "errorbar",
@@ -276,12 +280,56 @@ bACC <- ggplot(data = GoCog, aes(x = GoStage, y = Both_ACC, group = CogTask)) +
         axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
         axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8),
         text = element_text(family = 'BiauKai'))+
+  ylab("反\n應\n時\n間\n(秒)")+
+  xlab(" ")+
+  #ggtitle(paste0("(D) 總反應時間"))+
+  ggtitle(paste0("(A) 給定一圍棋階段探討四種認知干擾之差異分析"))
+
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖4.tiff",height=12, width=6, units="in", res = 300,compression = "lzw")
+# grid.arrange(bACC,GRT,CRT,bRT,ncol =1)
+# dev.off()
+
+## Interaction Plot: Type2
+GoCog$CogTask <- factor(GoCog$CogTask,labels = c("無干擾","空間干擾","推理干擾","計算干擾"))
+GoCog$GoStage <- factor(GoCog$GoStage,labels = c("佈\n局","中\n盤","官\n子"))
+
+bACC2 <- ggplot(data = GoCog, aes(x = GoStage, y = Both_ACC, group = CogTask)) +
+  scale_colour_grey(start = 0.5, end = 0)+
+  facet_grid(.~CogTask) +
+  # stat_summary(fun.y = mean, geom = "point", size = 2, shape = 19) +
+  # stat_summary(fun.y = mean, geom = "line") +
+  # stat_summary(fun.data = mean_se, geom = "errorbar",
+  #              linetype = "solid", width = .2) +
+  stat_summary(fun.y = mean, geom = "point", size = 2,shape = 1, col = "#666666") +
+  stat_summary(fun.y = mean, geom = "line", col = "#666666") +
+  stat_summary(fun.data = mean_se, geom = "errorbar",
+               linetype = "solid", width = .2, col = "#666666") +
+  theme_default()+
+  theme(plot.title = element_text(hjust = 0,size = 10),
+        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+        axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8),
+        text = element_text(family = 'BiauKai'))+
   ylab("正\n確\n率\n(%)")+
   xlab(" ")+
-  #coord_cartesian(ylim=c(0.3,90))+
-  ggtitle(paste0("(A) 正確率"))
+  coord_cartesian(ylim=c(35,90))+
+  ggtitle(paste0("(B) 給定一認知干擾作業探討三階段圍棋題目之差異分析"))
+annotation_df_2 <- data.frame(CogTask=c("空間干擾"), start=c("佈\n局"), end=c("中\n盤"),
+                              y=c(75),label=c("*"))
+annotation_df_22 <- data.frame(CogTask=c("空間干擾"), start=c("佈\n局"), end=c("官\n子"),
+                              y=c(85),label=c("*"))
+annotation_df_23 <- data.frame(CogTask=c("空間干擾"), start=c("中\n盤"), end=c("官\n子"),
+                              y=c(80),label=c("NS."))
 
-bRT <- ggplot(data = GoCog, aes(x = GoStage, y = Both_RT, group = CogTask)) +
+bACC2 <- bACC2+geom_signif(data=annotation_df_2,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+                         textsize = 3, vjust = 0,manual=TRUE)+
+  geom_signif(data=annotation_df_22,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+                                                                          textsize = 3, vjust = 0,manual=TRUE)+
+  geom_signif(data=annotation_df_23,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+              textsize = 3, vjust = 0,manual=TRUE)
+
+
+
+bRT2 <- ggplot(data = GoCog, aes(x = GoStage, y = Both_RT, group = CogTask)) +
   scale_colour_grey(start = 0.5, end = 0)+
   facet_grid(.~CogTask) +
   stat_summary(fun.y = mean, geom = "point", size = 2,shape = 1, col = "#666666") +
@@ -296,14 +344,18 @@ bRT <- ggplot(data = GoCog, aes(x = GoStage, y = Both_RT, group = CogTask)) +
   ylab("反\n應\n時\n間\n(秒)")+
   xlab(" ")+
   #ggtitle(paste0("(D) 總反應時間"))+
-  ggtitle(paste0("(B) 反應時間"))
+  ggtitle(paste0("(B) 給定一認知干擾作業探討三階段圍棋題目之差異分析"))
 
 # tiff(file = "../GoCog_Manuscript/FigureTable/圖4.tiff",height=12, width=6, units="in", res = 300,compression = "lzw")
 # grid.arrange(bACC,GRT,CRT,bRT,ncol =1)
 # dev.off()
 
-tiff(file = "../GoCog_Manuscript/FigureTable/S1.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
-grid.arrange(bACC,bRT,ncol =1)
+tiff(file = "../GoCog_Manuscript/FigureTable/圖4_正確率.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+grid.arrange(bACC,bACC2,ncol =1)
+dev.off()
+
+tiff(file = "../GoCog_Manuscript/FigureTable/圖5_反應時間.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+grid.arrange(bRT,bRT2,ncol =1)
 dev.off()
 
 
