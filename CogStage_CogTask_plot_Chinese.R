@@ -98,6 +98,6 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
   xlab("預測正確性(%)")+
   xlim(0,100)
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖9_ML.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+tiff(file = "../GoCog_Manuscript/FigureTable/圖7_ML.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
 grid.arrange(Gostage_all_ACC,CogTask_all_ACC,ncol=1)
 dev.off()
