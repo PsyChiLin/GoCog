@@ -59,7 +59,7 @@ Gostage_all_ACC <- ggplot(data = perm_all_test, aes(x = All))+
   #           color="#CC0099",linetype="dotted",size=1)+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
-        text = element_text(family = 'BiauKai'),
+        text = element_text(family = 'BiauKai')
         )+
   ggtitle(paste0("(A) 三階段圍棋"))+
   ylab("機\n率\n密\n度")+
@@ -93,7 +93,7 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
   #            color="663366",linetype="dotted",size=1)+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
-        text = element_text(family = 'BiauKai'),
+        text = element_text(family = 'BiauKai')
   )+
   ggtitle(paste0("(B) 四種認知干擾"))+
   ylab("機\n率\n密\n度")+
