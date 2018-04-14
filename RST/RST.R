@@ -9,6 +9,7 @@ library(pROC)
 library(ggplot2)
 library(grid)
 library(gridExtra)
+library(lm.beta)
 rm(list = ls())
 theme_default <- function(base_size = 12, base_family = ""){
   theme_bw(base_size = base_size, base_family = base_family) %+replace%
@@ -69,33 +70,33 @@ Spat <- filter(CogTask, CogTask == "Spat")
 Reas <- filter(CogTask, CogTask == "Reas")
 Calc <- filter(CogTask, CogTask == "Calc")
 
-summary(lm(Both_Acc~Verbal.z,data =None))
-summary(lm(Both_Acc~Nonverbal.z,data =None))
-summary(lm(Both_Acc~Total.z,data =None))
-summary(lm(Both_RT~Verbal.z,data =None))
-summary(lm(Both_RT~Nonverbal.z,data =None))
-summary(lm(Both_RT~Total.z,data =None))
-
-summary(lm(Both_Acc~Verbal.z,data =Spat))
-summary(lm(Both_Acc~Nonverbal.z,data =Spat))
-summary(lm(Both_Acc~Total.z,data =Spat))
-summary(lm(Both_RT~Verbal.z,data =Spat))
-summary(lm(Both_RT~Nonverbal.z,data =Spat))
-summary(lm(Both_RT~Total.z,data =Spat))
-
-summary(lm(Both_Acc~Verbal.z,data =Reas)) #  0.0106 * 
-summary(lm(Both_Acc~Nonverbal.z,data =Reas)) # 3e-04 ***
-summary(lm(Both_Acc~Total.z,data =Reas)) # 0.000438 ***
-summary(lm(Both_RT~Verbal.z,data =Reas))
-summary(lm(Both_RT~Nonverbal.z,data =Reas))
-summary(lm(Both_RT~Total.z,data =Reas))
-
-summary(lm(Both_Acc~Verbal.z,data = Calc))
-summary(lm(Both_Acc~Nonverbal.z,data = Calc))
-summary(lm(Both_Acc~Total.z,data = Calc))
-summary(lm(Both_RT~Verbal.z,data = Calc))# 0.00194 **
-summary(lm(Both_RT~Nonverbal.z,data = Calc))  #0.0539 . 
-summary(lm(Both_RT~Total.z,data = Calc))#0.00931 ** 
+# summary(lm(Both_Acc~Verbal.z,data =None))
+# summary(lm(Both_Acc~Nonverbal.z,data =None))
+# summary(lm(Both_Acc~Total.z,data =None))
+# summary(lm(Both_RT~Verbal.z,data =None))
+# summary(lm(Both_RT~Nonverbal.z,data =None))
+# summary(lm(Both_RT~Total.z,data =None))
+# 
+# summary(lm(Both_Acc~Verbal.z,data =Spat))
+# summary(lm(Both_Acc~Nonverbal.z,data =Spat))
+# summary(lm(Both_Acc~Total.z,data =Spat))
+# summary(lm(Both_RT~Verbal.z,data =Spat))
+# summary(lm(Both_RT~Nonverbal.z,data =Spat))
+# summary(lm(Both_RT~Total.z,data =Spat))
+# 
+# summary(lm(Both_Acc~Verbal.z,data =Reas)) #  0.0106 * 
+# summary(lm(Both_Acc~Nonverbal.z,data =Reas)) # 3e-04 ***
+summary(lm.beta(lm(Total.z~Both_Acc,data =Reas))) # 0.000438 ***
+# summary(lm(Both_RT~Verbal.z,data =Reas))
+# summary(lm(Both_RT~Nonverbal.z,data =Reas))
+# summary(lm(Both_RT~Total.z,data =Reas))
+# 
+# summary(lm(Both_Acc~Verbal.z,data = Calc))
+# summary(lm(Both_Acc~Nonverbal.z,data = Calc))
+# summary(lm(Both_Acc~Total.z,data = Calc))
+# summary(lm(Both_RT~Verbal.z,data = Calc))# 0.00194 **
+# summary(lm(Both_RT~Nonverbal.z,data = Calc))  #0.0539 . 
+# summary(lm(Both_RT~Total.z,data = Calc))#0.00931 ** 
 
 
 NoneOpen <- filter(RSTdata, CogTask == "None" & GoStage == "Open")
@@ -129,7 +130,10 @@ summary(lm(Both_RT~Total.z,data = SpatOpen))
 
 #summary(lm(Both_Acc~Verbal.z,data = ReasOpen)) #  0.0575 . 
 #summary(lm(Both_Acc~Nonverbal.z,data = ReasOpen)) # 0.000214 ***
-summary(lm(Both_Acc~Total.z,data = ReasOpen)) # 0.00131 ** 
+#summary(lm(Both_Acc~Total.z,data = ReasOpen)) # 0.00131 ** 
+##
+summary(lm.beta(lm(Total.z~Both_Acc,data = ReasOpen)))
+##
 #summary(lm(Both_RT~Verbal.z,data = ReasOpen))
 #summary(lm(Both_RT~Nonverbal.z,data = ReasOpen))
 summary(lm(Both_RT~Total.z,data = ReasOpen))
@@ -154,11 +158,13 @@ summary(lm(Both_RT~Total.z,data = NoneMid))
 summary(lm(Both_Acc~Total.z,data = SpatMid))
 #summary(lm(Both_RT~Verbal.z,data = SpatMid)) #  0.0498 *  
 #summary(lm(Both_RT~Nonverbal.z,data = SpatMid))
-summary(lm(Both_RT~Total.z,data = SpatMid)) # 0.0379 * 
+summary(lm(Total.z~Both_RT,data = SpatMid)) # 0.0379 * 
 
 #summary(lm(Both_Acc~Verbal.z,data = ReasMid)) # 0.243  
-#summary(lm(Both_Acc~Nonverbal.z,data = ReasMid)) #0.0176 *  
-summary(lm(Both_Acc~Total.z,data = ReasMid)) #  0.041 *   
+#summary(lm(Both_Acc~Nonverbal.z,data = ReasMid)) #0.0176 * 
+#
+summary(lm.beta(lm(Total.z~Both_Acc,data = ReasMid))) #  0.041 *   
+#
 #summary(lm(Both_RT~Verbal.z,data = ReasMid))
 #summary(lm(Both_RT~Nonverbal.z,data = ReasMid))
 summary(lm(Both_RT~Total.z,data = ReasMid))
@@ -187,7 +193,9 @@ summary(lm(Both_RT~Total.z,data = SpatEnd))
 
 #summary(lm(Both_Acc~Verbal.z,data = ReasEnd)) # 0.00213 **  
 #summary(lm(Both_Acc~Nonverbal.z,data = ReasEnd)) # 0.0135 * 
-summary(lm(Both_Acc~Total.z,data = ReasEnd)) # 0.00287 **    
+#
+summary(lm.beta(lm(Total.z~Both_Acc,data = ReasEnd))) # 0.00287 **    
+#
 #summary(lm(Both_RT~Verbal.z,data = ReasEnd))
 #summary(lm(Both_RT~Nonverbal.z,data = ReasEnd))
 summary(lm(Both_RT~Total.z,data = ReasEnd))
