@@ -27,8 +27,6 @@ theme_default <- function(base_size = 12, base_family = ""){
 }
 
 perm_all <- readRDS("Output/GoStage_bACCbRT_RF_All_Perm10000.Rdata")
-#perm_dan <- readRDS("Output/GoStage_bACCbRT_RF_Dan_Perm10000.Rdata")
-#perm_kyu <- readRDS("Output/GoStage_bACCbRT_RF_Kyu_Perm10000.Rdata")
 rstce <- readRDS("Output/GoStage_bACCbRT_RF_Rst.Rdata")
 rst <- rstce
 rst[,2:5] = (1-rstce[,2:5])*100
@@ -100,7 +98,6 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
   xlab("預測正確性(%)")+
   xlim(0,100)
 
-
-#tiff(file = "../GoCog_Manuscript/FigureTable/圖9.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+tiff(file = "../GoCog_Manuscript/FigureTable/圖9_ML.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
 grid.arrange(Gostage_all_ACC,CogTask_all_ACC,ncol=1)
-#dev.off()
+dev.off()
