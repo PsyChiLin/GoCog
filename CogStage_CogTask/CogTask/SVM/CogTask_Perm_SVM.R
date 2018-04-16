@@ -33,7 +33,7 @@ costvalue = 1
 gammavalue = 0.001
 kerneltype = "linear"
 
-Perm_time <- 3
+Perm_time <- 10000
 ############### All Permutation ###############
 
 meanrst_perm <- list()
