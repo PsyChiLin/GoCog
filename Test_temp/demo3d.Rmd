@@ -12,20 +12,40 @@ knitr::opts_chunk$set(echo = TRUE)
 library(psych)
 library(plotly)
 dta_3s_rst <- readRDS("../GoCogdata/dta_3s_rst.Rdata")
+scatter <- dta_3s_rst
+head(scatter)
+aver <- aggregate(cbind(Reas_Both_ACC,Spat_Both_ACC,
+                        Calc_Both_ACC,None_Both_ACC,
+                        Reas_Both_RT,Spat_Both_RT,
+                        Calc_Both_RT,None_Both_RT)~pred_GoStage,
+          data = dta_3s_rst, FUN = mean)[,c(9,1:8)]
 # PCA
 rst_pca <- prcomp(x = dta_3s_rst[5:12],center = TRUE,scale. = TRUE)
 #summary(rst_pca)
 # 3d plot
 dta_3s_rst[,14:16] <- predict(rst_pca, newdata=dta_3s_rst)
+
+
+
 #head(dta_3s_rst)
 colnames(dta_3s_rst)[14:16] <- c("PC1","PC2","PC3")
 dta_3s_rst$TF <- ifelse(dta_3s_rst$GoStage == dta_3s_rst$pred_GoStage,
                         as.character(dta_3s_rst$GoStage),"Error")
-dta_3s_rst$TF <- factor(dta_3s_rst$TF, levels = c("Open","Mid","End","Error"))
+
+# aver data predict
+dta <- as.data.frame(predict(rst_pca, newdata=aver))
+dta$Subj <- NA
+dta$Age <- NA
+dta$SubjGroup <- NA
+dta$GoStage <- NA
+dta$TF <- "MEAN"
+dta_3s_rst <- rbind(dta_3s_rst[,c(14:17)],dta[,c(1:3,13)])
+
+dta_3s_rst$TF <- factor(dta_3s_rst$TF, levels = c("Open","Mid","End","Error","MEAN"))
 
 # plotly (dynamic)
 p <- plot_ly(dta_3s_rst, x = ~PC1, y = ~PC2, z = ~PC3, color = ~TF,
-             colors = c('red', 'green',"blue","grey")) %>%
+             colors = c('red', 'green',"blue","grey","yellow")) %>%
   add_markers() %>%
   layout(scene = list(xaxis = list(title = ' ',showticklabels  = F),
                       yaxis = list(title = ' ',showticklabels  = F),

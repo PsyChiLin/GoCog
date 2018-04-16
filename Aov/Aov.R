@@ -13,6 +13,14 @@ GoCog$Both_ACC <- GoCog$Both_ACC*100
 GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
 GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
 
+########################### Open vs End ###########################
+agg <- aggregate(cbind(Both_ACC,Both_RT)~GoStage+Subj, data = GoCog, FUN = mean)
+agg <- filter(agg, GoStage != "Mid")
+agg$GoStage <- droplevels(agg$GoStage)
+aggregate(cbind(Both_ACC,Both_RT)~GoStage, data = GoCog, FUN = mean)
+
+t.test(Both_RT ~ GoStage, data = agg, paired = T)
+t.test(Both_ACC ~ GoStage, data = agg, paired = T)
 ########################### Two-Way:ACC ###########################
 aov2way <- aov_4(Both_ACC~(GoStage*CogTask|Subj),data = GoCog,
                  anova_table=list(correction = "none"))
