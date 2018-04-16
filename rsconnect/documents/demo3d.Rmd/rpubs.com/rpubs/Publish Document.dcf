@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/376332/0f8b5e83d15d4e839c68da5e73c1986b
+bundleId: https://api.rpubs.com/api/v1/document/376332/0f8b5e83d15d4e839c68da5e73c1986b
+url: http://rpubs.com/Chi-Lin/376332
+when: 1523890409.64697
