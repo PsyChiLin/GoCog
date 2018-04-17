@@ -45,10 +45,12 @@ Gostage_all_ACC <- ggplot(data = perm_all_test, aes(x = All))+
   )+
   geom_vline(aes(xintercept=quantile(perm_all_test[,1],c(.95))[1]),
              #color="firebrick", 
+             linetype="dashed",
              size=1)+
   geom_vline(aes(xintercept=rst$All[1]), # All
              #color="#FF6699",
-             linetype="dashed",size=1)+
+             col = "red",
+             size=1)+
   #geom_vline(aes(xintercept=rst$Open[1]), # Open
   #           color="#FF66CC",linetype="longdash",size=1)+
   #geom_vline(aes(xintercept=rst$Mid[1]), # Mid
@@ -76,11 +78,12 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
   #facet_grid(~CogTask)+
   geom_density(alpha=.5, col = "#000000", fill = "#000000" )+
   geom_vline(aes(xintercept=quantile(perm_all_test2[,1],c(.95))[1]),
+             linetype="dashed",
              #color="firebrick",
              size=1)+
   geom_vline(aes(xintercept=rst2$All[1]),
              #color="#FF6699",
-             linetype="dashed",size=1)+
+             col = "red",size=1)+
   # geom_vline(aes(xintercept=rst$Calc[1]),
   #            color="#FF66CC",linetype="longdash",size=1)+
   # geom_vline(aes(xintercept=rst$Reas[1]),
@@ -98,6 +101,6 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
   xlab("預測正確性(%)")+
   xlim(0,100)
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖7_ML.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+tiff(file = "../GoCog_Manuscript/FigureTable/圖6_ML.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
 grid.arrange(Gostage_all_ACC,CogTask_all_ACC,ncol=1)
 dev.off()

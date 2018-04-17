@@ -45,21 +45,21 @@ RSTdata$SubjGroup <- factor(RSTdata$SubjGroup, levels=c("Dan", "Kyu"),
 Reas <- filter(RSTdata, CogTask == "推\n理\n干\n擾")
 head(Reas)
 
-ACC <- ggplot(data= Reas, aes(x = Both_Acc, y = Total.z, 
-                              shape = GoStage)) +
-  facet_grid(~GoStage)+
-  #scale_colour_grey(start = 0.5, end = 0)+
-  theme_default()+
-  theme(text = element_text(family = 'BiauKai'),
-        legend.position = "none")+
-  #scale_colour_grey()+
-  geom_point(size=2) +
-  stat_smooth(method = "lm", se = T, col = "grey")+
-  scale_shape_manual(values=c(1,13,19))+
-  ggtitle(paste0("(A) 各階段圍棋題目正確率分析"))+
-  xlab("正確率(%)")+
-  ylab("推\n理\n思\n考\n測\n驗\n之\n標\n準\n化\n得\n分")+
-  xlim(0,100)
+# ACC <- ggplot(data= Reas, aes(x = Both_Acc, y = Total.z, 
+#                               shape = GoStage)) +
+#   facet_grid(~GoStage)+
+#   #scale_colour_grey(start = 0.5, end = 0)+
+#   theme_default()+
+#   theme(text = element_text(family = 'BiauKai'),
+#         legend.position = "none")+
+#   #scale_colour_grey()+
+#   geom_point(size=2) +
+#   stat_smooth(method = "lm", se = T, col = "grey")+
+#   scale_shape_manual(values=c(1,13,19))+
+#   ggtitle(paste0("(A) 各階段圍棋題目正確率分析"))+
+#   xlab("正確率(%)")+
+#   ylab("推\n理\n思\n考\n測\n驗\n之\n標\n準\n化\n得\n分")+
+#   xlim(0,100)
 CogTask <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Verbal.z,Nonverbal.z,Total.z)~Subj+CogTask,FUN = mean)
 Reas2 <- filter(CogTask, CogTask == "推\n理\n干\n擾")
 overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total.z)) +
@@ -68,14 +68,19 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total.z)) +
   #scale_colour_grey(start = 0.5, end = 0)+
   geom_point(size=2) +
   stat_smooth(method = "lm", se = T, col = "grey")+
-  ggtitle(paste0("(B) 整體正確率分析"))+
+  #ggtitle(paste0("(B) 整體正確率分析"))+
   xlab("正確率(%)")+
   ylab("推\n理\n思\n考\n測\n驗\n之\n標\n準\n化\n得\n分")#+
   #xlim(0,100)
 #overallACC
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖8_RST.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
-grid.arrange(ACC,overallACC,ncol = 1, heights = c(4,6))
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖8_RST.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+# grid.arrange(ACC,overallACC,ncol = 1, heights = c(4,6))
+# dev.off()
+
+
+tiff(file = "../GoCog_Manuscript/FigureTable/圖7_RST.tiff",height=3, width=3, units="in", res = 300,compression = "lzw")
+overallACC
 dev.off()
 
 

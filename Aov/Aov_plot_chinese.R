@@ -47,20 +47,20 @@ GoCog$SubjGroup <- factor(GoCog$SubjGroup, levels=c("Dan", "Kyu"),
                           labels = c("段位","級位"))
 ########################  Overall ########################  
 ## MainEffect Plot
-GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
-  #scale_colour_grey(start = 0.5, end = 0)+
-  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
-  stat_summary(fun.data = mean_se, geom = "errorbar", linetype = "solid", width = .1)+
-  theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),
-        text = element_text(family = 'BiauKai'),
-        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
-        axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8)
-        )+
-  ylab("正\n確\n率\n(%)")+
-  xlab(" ")+
-  coord_cartesian(ylim=c(35,90))+
-  ggtitle(paste0("(A) 三階段圍棋題目: 正確率"))
+# GoStagebACC <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_ACC))+
+#   #scale_colour_grey(start = 0.5, end = 0)+
+#   stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
+#   stat_summary(fun.data = mean_se, geom = "errorbar", linetype = "solid", width = .1)+
+#   theme_default()+
+#   theme(plot.title = element_text(hjust = 0,size = 10),
+#         text = element_text(family = 'BiauKai'),
+#         axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+#         axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8)
+#         )+
+#   ylab("正\n確\n率\n(%)")+
+#   xlab(" ")+
+#   coord_cartesian(ylim=c(35,90))+
+#   ggtitle(paste0("(A) 三階段圍棋題目: 正確率"))
 
 # GoStageGRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Go_RT))+
 #   #scale_colour_grey(start = 0.5, end = 0)+
@@ -106,25 +106,25 @@ GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
   xlab(" ")+
   coord_cartesian(ylim=c(10,25))+
   #ggtitle(paste0("(D) 三階段圍棋題目: 總反應時間"))+
-  ggtitle(paste0("(B) 三階段圍棋題目: 反應時間"))
+  #ggtitle(paste0("(B) 三階段圍棋題目: 反應時間"))+
+  ggtitle(paste0("(A) 三階段圍棋題目: 反應時間"))
 
 
-
-CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
-  #scale_colour_grey(start = 0.5, end = 0)+
-  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
-  stat_summary(fun.data = mean_se, geom = "errorbar", 
-               linetype = "solid", width = .1)+
-  theme_default()+
-  theme(plot.title = element_text(hjust = 0,size = 10),
-        axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
-        axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8),
-        text = element_text(family = 'BiauKai'))+
-  ylab("正\n確\n率\n(%)")+
-  xlab(" ")+
-  coord_cartesian(ylim=c(35,90))+
-  #ggtitle(paste0("(E) 四種認知干擾: 正確率"))+
-  ggtitle(paste0("(C) 四種認知干擾: 正確率"))
+# CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
+#   #scale_colour_grey(start = 0.5, end = 0)+
+#   stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
+#   stat_summary(fun.data = mean_se, geom = "errorbar", 
+#                linetype = "solid", width = .1)+
+#   theme_default()+
+#   theme(plot.title = element_text(hjust = 0,size = 10),
+#         axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
+#         axis.text.x  = element_text(angle = 0, vjust = 0.5, size = 8),
+#         text = element_text(family = 'BiauKai'))+
+#   ylab("正\n確\n率\n(%)")+
+#   xlab(" ")+
+#   coord_cartesian(ylim=c(35,90))+
+#   #ggtitle(paste0("(E) 四種認知干擾: 正確率"))+
+#   ggtitle(paste0("(C) 四種認知干擾: 正確率"))
 
 # CogTaskGRT <- ggplot(data = GoCog, aes(x = CogTask, y =  Go_RT))+
 #   #scale_colour_grey(start = 0.5, end = 0)+
@@ -170,16 +170,22 @@ CogTaskbRT <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_RT))+
   xlab(" ")+
   coord_cartesian(ylim=c(10,25))+
   #ggtitle(paste0("(H) 四種認知干擾: 總反應時間"))+
-  ggtitle(paste0("(D) 四種認知干擾: 反應時間"))
+  #ggtitle(paste0("(D) 四種認知干擾: 反應時間"))+
+  ggtitle(paste0("(B) 四種認知干擾: 反應時間"))
 
 # tiff(file = "../GoCog_Manuscript/FigureTable/圖3.tiff",height=6, width=12, units="in", res = 300,compression = "lzw")
 # grid.arrange(GoStagebACC,GoStageGRT,GoStageCRT,GoStagebRT,
 #              CogTaskbACC,CogTaskGRT,CogTaskCRT,CogTaskbRT,ncol =4)
 # dev.off()
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖3.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
-grid.arrange(GoStagebACC,GoStagebRT,
-             CogTaskbACC,CogTaskbRT,ncol = 2)
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖3.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+# grid.arrange(GoStagebACC,GoStagebRT,
+#              CogTaskbACC,CogTaskbRT,ncol = 2)
+# dev.off()
+
+tiff(file = "../GoCog_Manuscript/FigureTable/圖4_反應時間.tiff",height=4, width=6, units="in", res = 300,compression = "lzw")
+grid.arrange(GoStagebRT,
+             CogTaskbRT,ncol = 2)
 dev.off()
 
 ## Interaction Plot: Type1
@@ -350,13 +356,13 @@ bRT2 <- ggplot(data = GoCog, aes(x = GoStage, y = Both_RT, group = CogTask)) +
 # grid.arrange(bACC,GRT,CRT,bRT,ncol =1)
 # dev.off()
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖4_正確率.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+tiff(file = "../GoCog_Manuscript/FigureTable/圖3_正確率.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
 grid.arrange(bACC,bACC2,ncol =1)
 dev.off()
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖5_反應時間.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
-grid.arrange(bRT,bRT2,ncol =1)
-dev.off()
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖5_反應時間.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+# grid.arrange(bRT,bRT2,ncol =1)
+# dev.off()
 
 
 
