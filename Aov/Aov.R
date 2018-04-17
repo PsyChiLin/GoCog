@@ -14,13 +14,13 @@ GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
 GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
 
 ########################### Open vs End ###########################
-agg <- aggregate(cbind(Both_ACC,Both_RT)~GoStage+Subj, data = GoCog, FUN = mean)
-agg <- filter(agg, GoStage != "Mid")
-agg$GoStage <- droplevels(agg$GoStage)
-aggregate(cbind(Both_ACC,Both_RT)~GoStage, data = GoCog, FUN = mean)
-
-t.test(Both_RT ~ GoStage, data = agg, paired = T)
-t.test(Both_ACC ~ GoStage, data = agg, paired = T)
+# agg <- aggregate(cbind(Both_ACC,Both_RT)~GoStage+Subj, data = GoCog, FUN = mean)
+# agg <- filter(agg, GoStage != "Mid")
+# agg$GoStage <- droplevels(agg$GoStage)
+# aggregate(cbind(Both_ACC,Both_RT)~GoStage, data = GoCog, FUN = mean)
+# 
+# t.test(Both_RT ~ GoStage, data = agg, paired = T)
+# t.test(Both_ACC ~ GoStage, data = agg, paired = T)
 ########################### Two-Way:ACC ###########################
 aov2way <- aov_4(Both_ACC~(GoStage*CogTask|Subj),data = GoCog,
                  anova_table=list(correction = "none"))
@@ -29,8 +29,47 @@ summary(aov2way)
 # model01 <- aov(Both_ACC ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
 # summary(model01)
 # capture.output(summary(model01), file = "Output/aov2_Overall_BothACC.txt")
+########################### Main Effect Post Hoc: ACC GoStage###########################
+Go <- aggregate(cbind(Both_ACC,Both_RT)~GoStage, data = GoCog, FUN = mean)
+Go <- as.data.frame(t(Go))
+colnames(Go) <-  c("Open","Mid","End")
+Go <- Go[-1,]
+Go$Open <- as.numeric(as.character(Go$Open))
+Go$Mid <- as.numeric(as.character(Go$Mid))
+Go$End <- as.numeric(as.character(Go$End))
 
+OpenMid <- (Go$Open[1]-Go$Mid[1])/sqrt(225.42*2/24)
+OpenMid 
+2*pt(abs(OpenMid),46,lower.tail = F)
 
+OpenEnd <- (Go$Open[1]-Go$End[1])/sqrt(225.42*2/24)
+OpenEnd
+2*pt(abs(OpenEnd),46,lower.tail = F)
+
+MidEnd <- (Go$Mid[1]-Go$End[1])/sqrt(225.42*2/24)
+MidEnd
+2*pt(abs(MidEnd),46,lower.tail = F)
+########################### Main Effect Post Hoc: ACC CogTask ###########################
+Go <- aggregate(cbind(Both_ACC,Both_RT)~CogTask, data = GoCog, FUN = mean)
+Go <- as.data.frame(t(Go))
+colnames(Go) <-  c("None","Spat","Reas","Calc")
+Go <- Go[-1,]
+Go$None <- as.numeric(as.character(Go$None))
+Go$Spat <- as.numeric(as.character(Go$Spat))
+Go$Reas <- as.numeric(as.character(Go$Reas))
+Go$Calc <- as.numeric(as.character(Go$Calc))
+
+NoneSpat <- (Go$None[1]-Go$Spat[1])/sqrt(349.15*2/24)
+NoneSpat 
+2*pt(abs(OpenMid),69,lower.tail = F)
+
+NoneReas <- (Go$None[1]-Go$Reas[1])/sqrt(349.15*2/24)
+NoneReas
+2*pt(abs(NoneReas),69,lower.tail = F)
+
+NoneCalc<- (Go$None[1]-Go$Calc[1])/sqrt(349.15*2/24)
+NoneCalc
+2*pt(abs(NoneCalc),69,lower.tail = F)
 ########################### Simple main effect: Given Go Stage ###########################
 #### Simple main effect : given GoStage Open
 dta_Open <- filter(GoCog, GoStage == "Open")
@@ -180,6 +219,51 @@ summary(aov2wayRT)
 # model02 <- aov(Both_RT ~ Subj + GoStage * CogTask + Error(Subj), data=GoCog)
 # summary(model02) 
 # capture.output(summary(model02), file = "Output/aov2_Overall_BothRT.txt") 
+
+########################### Main Effect Post Hoc: RT GoStage###########################
+Go <- aggregate(cbind(Both_ACC,Both_RT)~GoStage, data = GoCog, FUN = mean)
+Go <- as.data.frame(t(Go))
+colnames(Go) <-  c("Open","Mid","End")
+Go <- Go[-1,]
+Go$Open <- as.numeric(as.character(Go$Open))
+Go$Mid <- as.numeric(as.character(Go$Mid))
+Go$End <- as.numeric(as.character(Go$End))
+
+OpenMid <- (Go$Open[2]-Go$Mid[2])/sqrt(14.52*2/24)
+OpenMid 
+2*pt(abs(OpenMid),42,lower.tail = F)
+
+OpenEnd <- (Go$Open[2]-Go$End[2])/sqrt(14.52*2/24)
+OpenEnd
+2*pt(abs(OpenEnd),42,lower.tail = F)
+
+MidEnd <- (Go$Mid[2]-Go$End[2])/sqrt(14.52*2/24)
+MidEnd
+2*pt(abs(MidEnd),42,lower.tail = F)
+########################### Main Effect Post Hoc: RT CogTask ###########################
+Go <- aggregate(cbind(Both_ACC,Both_RT)~CogTask, data = GoCog, FUN = mean)
+Go <- as.data.frame(t(Go))
+colnames(Go) <-  c("None","Spat","Reas","Calc")
+Go <- Go[-1,]
+Go$None <- as.numeric(as.character(Go$None))
+Go$Spat <- as.numeric(as.character(Go$Spat))
+Go$Reas <- as.numeric(as.character(Go$Reas))
+Go$Calc <- as.numeric(as.character(Go$Calc))
+
+NoneSpat <- (Go$None[2]-Go$Spat[2])/sqrt(12.71*2/24)
+NoneSpat 
+2*pt(abs(OpenMid),63,lower.tail = F)
+
+NoneReas <- (Go$None[2]-Go$Reas[2])/sqrt(12.71*2/24)
+NoneReas
+2*pt(abs(NoneReas),63,lower.tail = F)
+
+NoneCalc<- (Go$None[2]-Go$Calc[2])/sqrt(12.71*2/24)
+NoneCalc
+2*pt(abs(NoneCalc),63,lower.tail = F)
+
+
+
 ########################### 3-Way:ACC ###########################
 ## three-way ANOVA_Both
 aov3_acc <- aov_ez("Subj", "Both_ACC", GoCog, between = c("SubjGroup"), 
