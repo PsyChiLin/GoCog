@@ -61,7 +61,7 @@ Go$Calc <- as.numeric(as.character(Go$Calc))
 
 NoneSpat <- (Go$None[1]-Go$Spat[1])/sqrt(349.15*2/24)
 NoneSpat 
-2*pt(abs(OpenMid),69,lower.tail = F)
+2*pt(abs(NoneSpat),69,lower.tail = F)
 
 NoneReas <- (Go$None[1]-Go$Reas[1])/sqrt(349.15*2/24)
 NoneReas
@@ -252,7 +252,7 @@ Go$Calc <- as.numeric(as.character(Go$Calc))
 
 NoneSpat <- (Go$None[2]-Go$Spat[2])/sqrt(12.71*2/24)
 NoneSpat 
-2*pt(abs(OpenMid),63,lower.tail = F)
+2*pt(abs(NoneSpat),63,lower.tail = F)
 
 NoneReas <- (Go$None[2]-Go$Reas[2])/sqrt(12.71*2/24)
 NoneReas
@@ -261,9 +261,6 @@ NoneReas
 NoneCalc<- (Go$None[2]-Go$Calc[2])/sqrt(12.71*2/24)
 NoneCalc
 2*pt(abs(NoneCalc),63,lower.tail = F)
-
-
-
 ########################### 3-Way:ACC ###########################
 ## three-way ANOVA_Both
 aov3_acc <- aov_ez("Subj", "Both_ACC", GoCog, between = c("SubjGroup"), 

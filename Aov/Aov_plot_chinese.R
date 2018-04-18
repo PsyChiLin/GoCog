@@ -94,9 +94,9 @@ GoCog$SubjGroup <- factor(GoCog$SubjGroup, levels=c("Dan", "Kyu"),
 
 GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
   #scale_colour_grey(start = 0.5, end = 0)+
-  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 1, col = "#666666") +
+  stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
   stat_summary(fun.data = mean_se, geom = "errorbar",
-               linetype = "solid", width = .1,col = "#666666")+
+               linetype = "solid", width = .1)+
   theme_default()+
   theme(plot.title = element_text(hjust = 0,size = 10),
         axis.title.y  = element_text(angle = 0, vjust = 0.5, size = 8),
@@ -108,8 +108,14 @@ GoStagebRT <- ggplot(data = GoCog, aes(x = GoStage, y =  Both_RT))+
   #ggtitle(paste0("(D) 三階段圍棋題目: 總反應時間"))+
   #ggtitle(paste0("(B) 三階段圍棋題目: 反應時間"))+
   ggtitle(paste0("(A) 三階段圍棋題目: 反應時間"))
-
-
+annotation_df <- data.frame(start=c("佈\n局","佈\n局","中\n盤"), 
+                            #start=c("無\n干\n擾","無\n干\n擾","無\n干\n擾"), 
+                            #end=c("空\n間\n干\n擾","空\n間\n干\n擾","空\n間\n干\n擾"),
+                            end=c("中\n盤","官\n子","官\n子"),
+                            y=c(21,23,25),
+                            label=c("*", "NS.", "*"))
+GoStagebRT <- GoStagebRT+geom_signif(data=annotation_df,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+                         textsize = 3, vjust = 0,manual=TRUE)
 # CogTaskbACC <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_ACC))+
 #   #scale_colour_grey(start = 0.5, end = 0)+
 #   stat_summary(fun.y = mean, geom ="point", size = 2, shape = 19) +
@@ -168,11 +174,17 @@ CogTaskbRT <- ggplot(data = GoCog, aes(x = CogTask, y =  Both_RT))+
         text = element_text(family = 'BiauKai'))+
   ylab("反\n應\n時\n間\n(秒)")+
   xlab(" ")+
-  coord_cartesian(ylim=c(10,25))+
+  coord_cartesian(ylim=c(10,30))+
   #ggtitle(paste0("(H) 四種認知干擾: 總反應時間"))+
   #ggtitle(paste0("(D) 四種認知干擾: 反應時間"))+
   ggtitle(paste0("(B) 四種認知干擾: 反應時間"))
 
+annotation_df <- data.frame(start=c("無\n干\n擾","無\n干\n擾","無\n干\n擾"), 
+                            end=c("空\n間\n干\n擾","推\n理\n干\n擾","計\n算\n干\n擾"),
+                            y=c(21,25,29),
+                            label=c("*", "*", "*"))
+CogTaskbRT <- CogTaskbRT+geom_signif(data=annotation_df,aes(xmin=start, xmax=end, annotations=label, y_position=y),
+                        textsize = 3, vjust = 0,manual=TRUE)
 # tiff(file = "../GoCog_Manuscript/FigureTable/圖3.tiff",height=6, width=12, units="in", res = 300,compression = "lzw")
 # grid.arrange(GoStagebACC,GoStageGRT,GoStageCRT,GoStagebRT,
 #              CogTaskbACC,CogTaskGRT,CogTaskCRT,CogTaskbRT,ncol =4)
