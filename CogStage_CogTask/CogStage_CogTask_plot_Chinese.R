@@ -49,7 +49,7 @@ Gostage_all_ACC <- ggplot(data = perm_all_test, aes(x = All))+
              size=1)+
   geom_vline(aes(xintercept=rst$All[1]), # All
              #color="#FF6699",
-             col = "red",
+             col = "black",
              size=1)+
   #geom_vline(aes(xintercept=rst$Open[1]), # Open
   #           color="#FF66CC",linetype="longdash",size=1)+
@@ -83,7 +83,7 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
              size=1)+
   geom_vline(aes(xintercept=rst2$All[1]),
              #color="#FF6699",
-             col = "red",size=1)+
+             col = "black",size=1)+
   # geom_vline(aes(xintercept=rst$Calc[1]),
   #            color="#FF66CC",linetype="longdash",size=1)+
   # geom_vline(aes(xintercept=rst$Reas[1]),
