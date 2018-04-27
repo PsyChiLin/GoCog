@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r GoStage,echo=FALSE,message=FALSE,warning=FALSE}
 library(psych)
 library(plotly)
-dta_3s_rst <- readRDS("../GoCogdata/dta_3s_rst.Rdata")
+dta_3s_rst <- readRDS("../../GoCogdata/dta_3s_rst.Rdata")
 aver <- aggregate(cbind(Reas_Both_ACC,Spat_Both_ACC,
                         Calc_Both_ACC,None_Both_ACC,
                         Reas_Both_RT,Spat_Both_RT,
@@ -63,7 +63,7 @@ p
 ```{r cogtask, echo=FALSE,message=FALSE,warning=FALSE}
 library(psych)
 library(plotly)
-dta_4c_rst <- readRDS("../GoCogdata/dta_4c_rst.Rdata")
+dta_4c_rst <- readRDS("../../GoCogdata/dta_4c_rst.Rdata")
 aver2 <- aggregate(cbind(End_Both_ACC,Mid_Both_ACC,Open_Both_ACC,
                         End_Both_RT,Mid_Both_RT,Open_Both_RT)~pred_CogTask,
           data = dta_4c_rst, FUN = mean)

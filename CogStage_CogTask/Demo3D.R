@@ -42,7 +42,7 @@ dta_3s_rst$TF <- factor(dta_3s_rst$TF,
 
 # plotly (dynamic)
 p <- plot_ly(dta_3s_rst, x = ~PC1, y = ~PC2, z = ~PC3, symbol = ~TF,color = I('black'),
-             symbols = c('circle','circle-open',"star",'cross'),
+             symbols = c("circle","circle-open","square-open","cross"),
              marker = list(size = c(5))
              # ,
              # colors = c('pink',"darkred",
@@ -56,9 +56,6 @@ p <- plot_ly(dta_3s_rst, x = ~PC1, y = ~PC2, z = ~PC3, symbol = ~TF,color = I('b
                       zaxis = list(title = ' ',showticklabels  = F)))
 p
 
-
-library(psych)
-library(plotly)
 dta_4c_rst <- readRDS("../GoCogdata/dta_4c_rst.Rdata")
 aver2 <- aggregate(cbind(End_Both_ACC,Mid_Both_ACC,Open_Both_ACC,
                          End_Both_RT,Mid_Both_RT,Open_Both_RT)~pred_CogTask,
@@ -73,29 +70,32 @@ colnames(dta_4c_rst)[12:14] <- c("PC1","PC2","PC3")
 dta_4c_rst$TF <- ifelse(dta_4c_rst$CogTask == dta_4c_rst$pred_CogTask,
                         as.character(dta_4c_rst$CogTask),"Error")
 
-# aver data predict
-dta <- as.data.frame(predict(rst_pca, newdata=aver2))
-dta$Subj <- NA
-dta$Age <- NA
-dta$SubjGroup <- NA
-dta$CogTask <- NA
-dta$pred_CogTask <- aver$pred_CogTask
-dta$TF <- c("Calc(mean)", "None(mean)", "Reas(mean)","Spat(mean)")
-dta_4c_rst <- rbind(dta_4c_rst[,c(12:15)],dta[,c(1:3,11)])
-dta_4c_rst$TF <- factor(dta_4c_rst$TF, 
-                        levels = c("None","None(mean)",
-                                   "Spat", "Spat(mean)",
-                                   "Reas","Reas(mean)",
-                                   "Calc","Calc(mean)",
-                                   "Error"))
-
+# # aver data predict
+# dta <- as.data.frame(predict(rst_pca, newdata=aver2))
+# dta$Subj <- NA
+# dta$Age <- NA
+# dta$SubjGroup <- NA
+# dta$CogTask <- NA
+# dta$pred_CogTask <- aver$pred_CogTask
+# dta$TF <- c("Calc(mean)", "None(mean)", "Reas(mean)","Spat(mean)")
+# dta_4c_rst <- rbind(dta_4c_rst[,c(12:15)],dta[,c(1:3,11)])
+# dta_4c_rst$TF <- factor(dta_4c_rst$TF, 
+#                         levels = c("None","None(mean)",
+#                                    "Spat", "Spat(mean)",
+#                                    "Reas","Reas(mean)",
+#                                    "Calc","Calc(mean)",
+#                                    "Error"))
+dta_4c_rst$TF <- factor(dta_4c_rst$TF,levels = c("None","Spat","Reas","Calc","Error"))
 # plotly (dynamic)
-p <- plot_ly(dta_4c_rst, x = ~PC1, y = ~PC2, z = ~PC3, color = ~TF,
-             colors = c("yellow","orange",
-                        'pink',"darkred",
-                        'lightgreen',"darkgreen",
-                        "lightblue","darkblue",
-                        "grey")) %>%
+p <- plot_ly(dta_4c_rst, x = ~PC1, y = ~PC2, z = ~PC3, symbol = ~TF,color = I('black'),
+             symbols = c("circle","circle-open","square","diamond-open","cross"),
+             marker = list(size = c(5))
+             # colors = c("yellow","orange",
+             #            'pink',"darkred",
+             #            'lightgreen',"darkgreen",
+             #            "lightblue","darkblue",
+             #            "grey")
+             ) %>%
   add_markers() %>%
   layout(scene = list(xaxis = list(title = ' ',showticklabels  = F),
                       yaxis = list(title = ' ',showticklabels  = F),
