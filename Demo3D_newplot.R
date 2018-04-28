@@ -18,7 +18,7 @@ dta_3s_rst$TF <- ifelse(dta_3s_rst$GoStage == dta_3s_rst$pred_GoStage,
                         as.character(dta_3s_rst$GoStage),"Error")
 dta_3s_rst$TF <- factor(dta_3s_rst$TF, levels = c("Open","Mid","End","Error"))
 
-shapes = c(1, 19, 2, 4) 
+shapes = c(19,1, 2, 4) 
 shapes <- shapes[as.numeric(dta_3s_rst$TF)]
 pdf(file = "../GoCog_Manuscript/FigureTable/圖5_GoStage_3D.pdf", width = 7, height = 7)
 gostage <- scatterplot3d(dta_3s_rst[,14:16], pch = "", grid=TRUE, box=FALSE,label.tick.marks=F,
@@ -27,12 +27,12 @@ gostage <- scatterplot3d(dta_3s_rst[,14:16], pch = "", grid=TRUE, box=FALSE,labe
 addgrids3d(dta_3s_rst[,14:16], grid = c("xy", "xz", "yz"),xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4))
 gostage$points3d(dta_3s_rst[,14:16], pch = shapes)
 dev.off()
-# gostage <- scatterplot3d(dta_3s_rst[,14:16], pch = "", grid=TRUE, box=FALSE,label.tick.marks=F,
-#                          xlim=c(-4,4), ylim=c(-4,4), zlim=c(-4,4),
-#                          xlab = " ", ylab = " ",zlab = " ")
-# addgrids3d(dta_3s_rst[,14:16], grid = c("xy", "xz", "yz"),xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4))
-# gostage$points3d(dta_3s_rst[,14:16], pch = shapes)
-# legend("right", legend = levels(dta_3s_rst$TF), pch = c(1, 19, 2, 4) )
+gostage <- scatterplot3d(dta_3s_rst[,14:16], pch = "", grid=TRUE, box=FALSE,label.tick.marks=F,
+                          xlim=c(-4,4), ylim=c(-4,4), zlim=c(-4,4),
+                          xlab = " ", ylab = " ",zlab = " ")
+addgrids3d(dta_3s_rst[,14:16], grid = c("xy", "xz", "yz"),xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4))
+gostage$points3d(dta_3s_rst[,14:16], pch = shapes)
+legend("right", legend = levels(dta_3s_rst$TF), pch = c(19,1, 2, 4))
 
 
 dta_4c_rst <- readRDS("../GoCogdata/dta_4c_rst.Rdata")
