@@ -22,11 +22,17 @@ shapes = c(1, 19, 2, 4)
 shapes <- shapes[as.numeric(dta_3s_rst$TF)]
 pdf(file = "../GoCog_Manuscript/FigureTable/圖5_GoStage_3D.pdf", width = 7, height = 7)
 gostage <- scatterplot3d(dta_3s_rst[,14:16], pch = "", grid=TRUE, box=FALSE,label.tick.marks=F,
-              xlab = " ", ylab = " ",zlab = " ")
-addgrids3d(dta_3s_rst[,14:16], grid = c("xy", "xz", "yz"))
+                         xlim=c(-4,4), ylim=c(-4,4), zlim=c(-4,4),
+                         xlab = " ", ylab = " ",zlab = " ")
+addgrids3d(dta_3s_rst[,14:16], grid = c("xy", "xz", "yz"),xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4))
 gostage$points3d(dta_3s_rst[,14:16], pch = shapes)
 dev.off()
-#legend("bottom", legend = levels(dta_3s_rst$TF), pch = c(1, 2, 19, 4))
+# gostage <- scatterplot3d(dta_3s_rst[,14:16], pch = "", grid=TRUE, box=FALSE,label.tick.marks=F,
+#                          xlim=c(-4,4), ylim=c(-4,4), zlim=c(-4,4),
+#                          xlab = " ", ylab = " ",zlab = " ")
+# addgrids3d(dta_3s_rst[,14:16], grid = c("xy", "xz", "yz"),xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4))
+# gostage$points3d(dta_3s_rst[,14:16], pch = shapes)
+# legend("right", legend = levels(dta_3s_rst$TF), pch = c(1, 19, 2, 4) )
 
 
 dta_4c_rst <- readRDS("../GoCogdata/dta_4c_rst.Rdata")
@@ -49,8 +55,18 @@ shapes2 = c(16, 2, 17, 0, 4)
 shapes2 <- shapes2[as.numeric(dta_4c_rst$TF)]
 pdf(file = "../GoCog_Manuscript/FigureTable/圖5_CogTask_3D.pdf", width = 7, height = 7)
 cogtask <- scatterplot3d(dta_4c_rst[,12:14], pch = "", grid=TRUE, box=FALSE,label.tick.marks=F,
+                         xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4),
                          xlab = " ", ylab = " ",zlab = " ")
-addgrids3d(dta_4c_rst[,12:14], grid = c("xy", "xz", "yz"))
+addgrids3d(dta_4c_rst[,12:14],
+           xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4),
+           grid = c("xy", "xz", "yz"))
 cogtask$points3d(dta_4c_rst[,12:14], pch = shapes2)
 dev.off()
-#legend("bottom", legend = levels(dta_4c_rst$TF), pch = c(16, 2, 5, 22,4))
+cogtask <- scatterplot3d(dta_4c_rst[,12:14], pch = "", grid=TRUE, box=FALSE,label.tick.marks=F,
+                         xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4),
+                         xlab = " ", ylab = " ",zlab = " ")
+addgrids3d(dta_4c_rst[,12:14],
+           xlim = c(-4,4), ylim = c(-4,4), zlim = c(-4,4),
+           grid = c("xy", "xz", "yz"))
+cogtask$points3d(dta_4c_rst[,12:14], pch = shapes2)
+legend("bottom", legend = levels(dta_4c_rst$TF), pch = c(16, 2, 17, 0, 4))
