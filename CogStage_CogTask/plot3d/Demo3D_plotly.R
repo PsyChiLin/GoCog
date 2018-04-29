@@ -41,14 +41,11 @@ dta_3s_rst$TF <- factor(dta_3s_rst$TF,
                                    "Error"))
 
 # plotly (dynamic)
-p <- plot_ly(dta_3s_rst, x = ~PC1, y = ~PC2, z = ~PC3, symbol = ~TF,color = I('black'),
-             symbols = c("circle","circle-open","square-open","cross"),
+p <- plot_ly(dta_3s_rst, x = ~PC1, y = ~PC2, z = ~PC3, symbol = ~TF,color = ~TF,#I('black'),
+             symbols = c("circle","circle-open","square","cross"),
              marker = list(size = c(5))
-             # ,
-             # colors = c('pink',"darkred",
-             #            'lightgreen',"darkgreen",
-             #            "lightblue","darkblue",
-             #            "grey")
+             ,
+             colors = c("black","black","grey","black")
 ) %>%
   add_markers() %>%
   layout(scene = list(xaxis = list(title = ' ',showticklabels  = F),
@@ -87,17 +84,14 @@ dta_4c_rst$TF <- ifelse(dta_4c_rst$CogTask == dta_4c_rst$pred_CogTask,
 #                                    "Error"))
 dta_4c_rst$TF <- factor(dta_4c_rst$TF,levels = c("None","Spat","Reas","Calc","Error"))
 # plotly (dynamic)
-p <- plot_ly(dta_4c_rst, x = ~PC1, y = ~PC2, z = ~PC3, symbol = ~TF,color = I('black'),
-             symbols = c("circle","circle-open","square","diamond-open","cross"),
-             marker = list(size = c(5))
-             # colors = c("yellow","orange",
-             #            'pink',"darkred",
-             #            'lightgreen',"darkgreen",
-             #            "lightblue","darkblue",
-             #            "grey")
+p <- plot_ly(dta_4c_rst, x = ~PC1, y = ~PC2, z = ~PC3, symbol = ~TF,color = ~TF,# I('black'),
+             symbols = c("circle-open","circle","square-open","diamond","cross"),
+             marker = list(size = c(5)),
+             colors = c("black","black","gray45","gray85","black")
              ) %>%
   add_markers() %>%
   layout(scene = list(xaxis = list(title = ' ',showticklabels  = F),
                       yaxis = list(title = ' ',showticklabels  = F),
                       zaxis = list(title = ' ',showticklabels  = F)))
 p
+
