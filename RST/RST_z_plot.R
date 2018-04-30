@@ -31,35 +31,21 @@ g_legend<-function(a.gplot){
   return(legend)}
 
 # Read Data
-RST<-read.csv("../GoCogdata/NoneRST_All.csv", h=T)[,c(1:3,18)]
+RST<-read.csv("../GoCogdata/NoneRST_All.csv", h=T)[,c(1:3,25:27)]
 GoCog<-read.csv("../GoCogdata/GoCog_20180404.csv", h=T)[,1:7]
 RSTdata <- full_join(GoCog,RST)
 RSTdata$Both_Acc <- RSTdata$Both_Acc*100
 RSTdata$Both_RT <- RSTdata$Both_RT/1000
 RSTdata$GoStage <- factor(RSTdata$GoStage, levels=c("Open", "Mid", "End"), 
-                          labels = c("佈局","中盤","官子"))
+                        labels = c("佈局","中盤","官子"))
 RSTdata$CogTask<- factor(RSTdata$CogTask, levels=c("None", "Spat", "Reas", "Calc"),
-                         labels = c("無\n干\n擾","空\n間\n干\n擾","推\n理\n干\n擾","計\n算\n干\n擾"))
+                       labels = c("無\n干\n擾","空\n間\n干\n擾","推\n理\n干\n擾","計\n算\n干\n擾"))
 RSTdata$SubjGroup <- factor(RSTdata$SubjGroup, levels=c("Dan", "Kyu"),
-                            labels = c("段位","級位"))
+                          labels = c("段位","級位"))
 Reas <- filter(RSTdata, CogTask == "推\n理\n干\n擾")
 head(Reas)
 
-Overall <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj,FUN = mean)
-summary(lm.beta(lm(Both_Acc~Total,data = Overall)))
-OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
-  theme_default()+
-  theme(text = element_text(family = 'BiauKai'))+
-  #scale_colour_grey(start = 0.5, end = 0)+
-  geom_point(size=2) +
-  stat_smooth(method = "lm", se = T, col = "grey")+
-  ggtitle(paste0("(A) 整體正確率"))+
-  xlab("正確率(%)")+
-  ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
-
-
-
-# ACC <- ggplot(data= Reas, aes(x = Both_Acc, y = Total, 
+# ACC <- ggplot(data= Reas, aes(x = Both_Acc, y = Total.z, 
 #                               shape = GoStage)) +
 #   facet_grid(~GoStage)+
 #   #scale_colour_grey(start = 0.5, end = 0)+
@@ -74,18 +60,18 @@ OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
 #   xlab("正確率(%)")+
 #   ylab("推\n理\n思\n考\n測\n驗\n之\n標\n準\n化\n得\n分")+
 #   xlim(0,100)
-CogTask <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj+CogTask,FUN = mean)
+CogTask <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Verbal.z,Nonverbal.z,Total.z)~Subj+CogTask,FUN = mean)
 Reas2 <- filter(CogTask, CogTask == "推\n理\n干\n擾")
-overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
+overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total.z)) +
   theme_default()+
   theme(text = element_text(family = 'BiauKai'))+
   #scale_colour_grey(start = 0.5, end = 0)+
   geom_point(size=2) +
   stat_smooth(method = "lm", se = T, col = "grey")+
-  ggtitle(paste0("(B) 推理干擾情境平均正確率"))+
+  #ggtitle(paste0("(B) 整體正確率分析"))+
   xlab("正確率(%)")+
-  ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
-#xlim(0,100)
+  ylab("推\n理\n思\n考\n測\n驗\n之\n標\n準\n化\n得\n分")#+
+  #xlim(0,100)
 #overallACC
 
 # tiff(file = "../GoCog_Manuscript/FigureTable/圖8_RST.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
@@ -93,13 +79,13 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
 # dev.off()
 
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖7_RST.tiff",height=3, width=5, units="in", res = 300,compression = "lzw")
-grid.arrange(OACC,overallACC,ncol = 2)
+tiff(file = "../GoCog_Manuscript/FigureTable/圖7_RST.tiff",height=3, width=3, units="in", res = 300,compression = "lzw")
+overallACC
 dev.off()
 
 
 #ACC
-# TotalACC <- ggplot(data= RSTdata, aes(x = Both_Acc, y = Total)) +
+# TotalACC <- ggplot(data= RSTdata, aes(x = Both_Acc, y = Total.z)) +
 #   facet_grid(GoStage~CogTask)+
 #   theme_default() + 
 #   theme(plot.title = element_text(hjust = 0,size = 10),
@@ -111,7 +97,7 @@ dev.off()
 #   #ggtitle(paste0("(A) 正確率"))+
 #   xlab(" ")
 
-# Verbal <- ggplot(data= RSTdata, aes(x = Both_Acc, y = Verbal)) +
+# Verbal <- ggplot(data= RSTdata, aes(x = Both_Acc, y = Verbal.z)) +
 #   facet_grid(GoStage~CogTask)+
 #   theme_default() + 
 #   theme(plot.title = element_text(hjust = 0,size = 10),
@@ -123,7 +109,7 @@ dev.off()
 #   xlab(" ")+
 #   ggtitle(paste0("(B) Verbal"))
 # 
-# NonVerbal <- ggplot(data= RSTdata, aes(x = Both_Acc, y = Nonverbal)) +
+# NonVerbal <- ggplot(data= RSTdata, aes(x = Both_Acc, y = Nonverbal.z)) +
 #   facet_grid(GoStage~CogTask)+
 #   theme_default() + 
 #   theme(plot.title = element_text(hjust = 0,size = 10),
