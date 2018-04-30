@@ -43,6 +43,10 @@ Gostage_all_ACC <- ggplot(data = perm_all_test, aes(x = All))+
                col = "#000000", 
                fill = "#000000"
   )+
+  geom_vline(aes(xintercept=33.3333333),
+             linetype="dotted",
+             #color="firebrick",
+             size=1)+
   geom_vline(aes(xintercept=quantile(perm_all_test[,1],c(.95))[1]),
              #color="firebrick", 
              linetype="dashed",
@@ -77,6 +81,10 @@ colnames(perm_all_test2) <- c("All","Calc","Reas","Spat","None")
 CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+  
   #facet_grid(~CogTask)+
   geom_density(alpha=.5, col = "#000000", fill = "#000000" )+
+  geom_vline(aes(xintercept=25),
+             linetype="dotted",
+             #color="firebrick",
+             size=1)+
   geom_vline(aes(xintercept=quantile(perm_all_test2[,1],c(.95))[1]),
              linetype="dashed",
              #color="firebrick",
