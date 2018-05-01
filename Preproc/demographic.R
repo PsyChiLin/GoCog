@@ -6,6 +6,6 @@ dim(dta)
 str(dta)
 
 ##### Age #####
-
+max(dta$Age);min(dta$Age)
 mean(dta$Age);sd(dta$Age)
 min(dta$Age);max(dta$Age)
