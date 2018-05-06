@@ -53,8 +53,10 @@ OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
   #scale_colour_grey(start = 0.5, end = 0)+
   geom_point(size=2) +
   stat_smooth(method = "lm", se = T, col = "grey")+
-  ggtitle(paste0("(A) 整體正確率"))+
-  xlab("正確率(%)")+
+  #ggtitle(paste0("(A) 整體正確率"))+
+  xlab("整體正確率(%)")+
+  xlim(15,90)+
+  ylim(30,105)+
   ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
 
 
@@ -82,9 +84,12 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
   #scale_colour_grey(start = 0.5, end = 0)+
   geom_point(size=2) +
   stat_smooth(method = "lm", se = T, col = "grey")+
-  ggtitle(paste0("(B) 推理干擾情境平均正確率"))+
-  xlab("正確率(%)")+
-  ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
+  #ggtitle(paste0("(B) 推理干擾情境平均正確率"))+
+  xlim(15,90)+
+  ylim(30,105)+
+  xlab("推理干擾情況下正確率(%)")+
+  ylab(" ")
+  #ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
 #xlim(0,100)
 #overallACC
 
@@ -93,9 +98,13 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
 # dev.off()
 
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖7_RST.tiff",height=3, width=5, units="in", res = 300,compression = "lzw")
+png(file = "../GoCog_Manuscript/FigureTable/圖7_RST.png",height=3, width=5, units="in", res = 300)
 grid.arrange(OACC,overallACC,ncol = 2)
 dev.off()
+
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖7_RST.tiff",height=3, width=5, units="in", res = 300,compression = "lzw")
+# grid.arrange(OACC,overallACC,ncol = 2)
+# dev.off()
 
 
 #ACC

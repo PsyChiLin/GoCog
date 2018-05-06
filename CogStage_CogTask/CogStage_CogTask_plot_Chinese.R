@@ -35,7 +35,7 @@ perm_all_test <- as.data.frame(1-perm_all$test)
 colnames(perm_all_test) <- c("All","Open","Mid","End")
 perm_all_test <- perm_all_test*100
 head(perm_all_test)
-
+alphavalue = 0.0005
 
 Gostage_all_ACC <- ggplot(data = perm_all_test, aes(x = All))+  
   #facet_grid(~GoStage)+
@@ -47,7 +47,7 @@ Gostage_all_ACC <- ggplot(data = perm_all_test, aes(x = All))+
              linetype="dotted",
              #color="firebrick",
              size=1)+
-  geom_vline(aes(xintercept=quantile(perm_all_test[,1],c(.95))[1]),
+  geom_vline(aes(xintercept=quantile(perm_all_test[,1],c(1-alphavalue))[1]),
              #color="firebrick", 
              linetype="dashed",
              size=1)+
@@ -85,7 +85,7 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
              linetype="dotted",
              #color="firebrick",
              size=1)+
-  geom_vline(aes(xintercept=quantile(perm_all_test2[,1],c(.95))[1]),
+  geom_vline(aes(xintercept=quantile(perm_all_test2[,1],c(1-alphavalue))[1]),
              linetype="dashed",
              #color="firebrick",
              size=1)+
@@ -109,6 +109,10 @@ CogTask_all_ACC <- ggplot(data = perm_all_test2, aes(x = All))+
   xlab("預測正確性(%)")+
   xlim(0,100)
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖6_ML.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+png(file = "../GoCog_Manuscript/FigureTable/圖6_ML.png",height=6, width=6, units="in", res = 300)
 grid.arrange(Gostage_all_ACC,CogTask_all_ACC,ncol=1)
 dev.off()
+
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖6_ML.tiff",height=6, width=6, units="in", res = 300, compression = "lzw")
+# grid.arrange(Gostage_all_ACC,CogTask_all_ACC,ncol=1)
+# dev.off()
