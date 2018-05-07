@@ -10,6 +10,10 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 rm(list = ls())
+
+# R square
+# p value
+
 theme_default <- function(base_size = 12, base_family = ""){
   theme_bw(base_size = base_size, base_family = base_family) %+replace%
     theme(strip.background = element_blank(),
@@ -47,12 +51,17 @@ head(Reas)
 
 Overall <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj,FUN = mean)
 summary(lm.beta(lm(Both_Acc~Total,data = Overall)))
+lb1 <- paste("R^2 ==", 0.1382)
 OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
   theme_default()+
   theme(text = element_text(family = 'BiauKai'))+
   #scale_colour_grey(start = 0.5, end = 0)+
   geom_point(size=2) +
   stat_smooth(method = "lm", se = T, col = "grey")+
+  annotate("text", x = 18, y = 90, label = lb1, parse=TRUE,hjust = 0)+
+  annotate("text", x = 21, y = 85, label = "p",fontface = "italic", hjust = 0)+
+  annotate("text", x = 25, y = 85, label = "=",hjust = 0,size = 3)+
+  annotate("text", x = 29, y = 85, label = "0.07", hjust = 0)+
   #ggtitle(paste0("(A) 整體正確率"))+
   xlab("整體正確率(%)")+
   xlim(15,90)+
@@ -78,6 +87,8 @@ OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
 #   xlim(0,100)
 CogTask <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj+CogTask,FUN = mean)
 Reas2 <- filter(CogTask, CogTask == "推\n理\n干\n擾")
+lb2 <- paste("R^2 == ", 0.2874)
+#plb2 <- paste("p", 0.2874)
 overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
   theme_default()+
   theme(text = element_text(family = 'BiauKai'))+
@@ -88,7 +99,12 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
   xlim(15,90)+
   ylim(30,105)+
   xlab("推理干擾情況下正確率(%)")+
+  annotate("text", x = 18, y = 90, label = lb2, parse=TRUE, hjust = 0)+
+  annotate("text", x = 21, y = 85, label = "p",fontface = "italic", hjust = 0)+
+  annotate("text", x = 25, y = 85, label = "<",hjust = 0,size = 3)+
+  annotate("text", x = 29, y = 85, label = "0.001", hjust = 0)+
   ylab(" ")
+
   #ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
 #xlim(0,100)
 #overallACC

@@ -198,11 +198,16 @@ CogTaskbRT<- CogTaskbRT+geom_text(aes(x = CogTask, y =  Both_RT, label =  label)
 # grid.arrange(GoStagebACC,GoStagebRT,
 #              CogTaskbACC,CogTaskbRT,ncol = 2)
 # dev.off()
+# 
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖4_反應時間.tiff",height=4, width=6, units="in", res = 300,compression = "lzw")
+# grid.arrange(GoStagebRT,
+#              CogTaskbRT,ncol = 2)
+# dev.off()
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖4_反應時間.tiff",height=4, width=6, units="in", res = 300,compression = "lzw")
-grid.arrange(GoStagebRT,
-             CogTaskbRT,ncol = 2)
+png(file = "../GoCog_Manuscript/FigureTable/圖4_反應時間.png",height=4, width=6, units="in", res = 300)
+grid.arrange(GoStagebRT,CogTaskbRT,ncol = 2)
 dev.off()
+
 
 ## Interaction Plot: Type1
 GoCog$GoStage <- factor(GoCog$GoStage, labels = c("佈局","中盤","官子"))
@@ -374,7 +379,11 @@ bRT2 <- ggplot(data = GoCog, aes(x = GoStage, y = Both_RT, group = CogTask)) +
 # grid.arrange(bACC,GRT,CRT,bRT,ncol =1)
 # dev.off()
 
-tiff(file = "../GoCog_Manuscript/FigureTable/圖3_正確率.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+# tiff(file = "../GoCog_Manuscript/FigureTable/圖3_正確率.tiff",height=6, width=6, units="in", res = 300,compression = "lzw")
+# grid.arrange(bACC,bACC2,ncol =1)
+# dev.off()
+
+png(file = "../GoCog_Manuscript/FigureTable/圖3_正確率.png",height=6, width=6, units="in", res = 300)
 grid.arrange(bACC,bACC2,ncol =1)
 dev.off()
 
