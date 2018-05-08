@@ -51,14 +51,16 @@ head(Reas)
 
 Overall <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj,FUN = mean)
 summary(lm.beta(lm(Both_Acc~Total,data = Overall)))
-lb1 <- paste("R^2 ==", 0.1382)
+#lb1 <- paste("r ==", 0.371)
 OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
   theme_default()+
   theme(text = element_text(family = 'BiauKai'))+
   #scale_colour_grey(start = 0.5, end = 0)+
   geom_point(size=2) +
   stat_smooth(method = "lm", se = T, col = "grey")+
-  annotate("text", x = 18, y = 90, label = lb1, parse=TRUE,hjust = 0)+
+  annotate("text", x = 21, y = 90, label = "r", hjust = 0,fontface = "italic")+
+  annotate("text", x = 25, y = 90, label = "=", hjust = 0,size = 3)+
+  annotate("text", x = 29, y = 90, label = "0.371",hjust = 0)+
   annotate("text", x = 21, y = 85, label = "p",fontface = "italic", hjust = 0)+
   annotate("text", x = 25, y = 85, label = "=",hjust = 0,size = 3)+
   annotate("text", x = 29, y = 85, label = "0.07", hjust = 0)+
@@ -67,6 +69,23 @@ OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
   xlim(15,90)+
   ylim(30,105)+
   ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
+OACC_yx <- ggplot(data= Overall, aes(x = Total, y = Both_Acc)) +
+  theme_default()+
+  theme(text = element_text(family = 'BiauKai'))+
+  #scale_colour_grey(start = 0.5, end = 0)+
+  geom_point(size=2) +
+  stat_smooth(method = "lm", se = T, col = "grey")+
+  annotate("text", x = 30, y = 90, label = "r", hjust = 0,fontface = "italic")+
+  annotate("text", x = 34, y = 90, label = "=", hjust = 0,size = 3)+
+  annotate("text", x = 38, y = 90, label = "0.371",hjust = 0)+
+  annotate("text", x = 30, y = 85, label = "p",fontface = "italic", hjust = 0)+
+  annotate("text", x = 34, y = 85, label = "=",hjust = 0,size = 3)+
+  annotate("text", x = 38, y = 85, label = "0.07", hjust = 0)+
+  #ggtitle(paste0("(A) 整體正確率"))+
+  ylab("整\n體\n正\n確\n率\n(%)")+
+  xlim(30,105)+
+  ylim(15,90)+
+  xlab("推理思考測驗總分")#+
 
 
 
@@ -87,7 +106,7 @@ OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
 #   xlim(0,100)
 CogTask <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj+CogTask,FUN = mean)
 Reas2 <- filter(CogTask, CogTask == "推\n理\n干\n擾")
-lb2 <- paste("R^2 == ", 0.2874)
+#lb2 <- paste("r == ", 0.661)
 #plb2 <- paste("p", 0.2874)
 overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
   theme_default()+
@@ -99,11 +118,31 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
   xlim(15,90)+
   ylim(30,105)+
   xlab("推理干擾情況下正確率(%)")+
-  annotate("text", x = 18, y = 90, label = lb2, parse=TRUE, hjust = 0)+
+  annotate("text", x = 21, y = 90, label = "r", hjust = 0,fontface = "italic")+
+  annotate("text", x = 25, y = 90, label = "=", hjust = 0,size = 3)+
+  annotate("text", x = 29, y = 90, label = "0.661",hjust = 0)+
   annotate("text", x = 21, y = 85, label = "p",fontface = "italic", hjust = 0)+
   annotate("text", x = 25, y = 85, label = "<",hjust = 0,size = 3)+
   annotate("text", x = 29, y = 85, label = "0.001", hjust = 0)+
   ylab(" ")
+
+overallACC_yx <- ggplot(data= Reas2, aes(x = Total,y = Both_Acc)) +
+  theme_default()+
+  theme(text = element_text(family = 'BiauKai'))+
+  #scale_colour_grey(start = 0.5, end = 0)+
+  geom_point(size=2) +
+  stat_smooth(method = "lm", se = T, col = "grey")+
+  #ggtitle(paste0("(B) 推理干擾情境平均正確率"))+
+  xlim(30,105)+
+  ylim(15,90)+  
+  xlab("推理思考測驗總分")+
+  ylab("推\n理\n干\n擾\n情\n況\n下\n正\n確\n率\n(%)")+
+  annotate("text", x = 30, y = 90, label = "r", hjust = 0,fontface = "italic")+
+  annotate("text", x = 34, y = 90, label = "=", hjust = 0,size = 3)+
+  annotate("text", x = 38, y = 90, label = "0.661",hjust = 0)+
+  annotate("text", x = 30, y = 85, label = "p",fontface = "italic", hjust = 0)+
+  annotate("text", x = 34, y = 85, label = "<",hjust = 0,size = 3)+
+  annotate("text", x = 38, y = 85, label = "0.001", hjust = 0)
 
   #ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
 #xlim(0,100)
@@ -117,6 +156,11 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
 png(file = "../GoCog_Manuscript/FigureTable/圖7_RST.png",height=3, width=5, units="in", res = 300)
 grid.arrange(OACC,overallACC,ncol = 2)
 dev.off()
+
+png(file = "../GoCog_Manuscript/FigureTable/圖7_RST_v2.png",height=3, width=5, units="in", res = 300)
+grid.arrange(OACC_yx,overallACC_yx,ncol = 2)
+dev.off()
+
 
 # tiff(file = "../GoCog_Manuscript/FigureTable/圖7_RST.tiff",height=3, width=5, units="in", res = 300,compression = "lzw")
 # grid.arrange(OACC,overallACC,ncol = 2)

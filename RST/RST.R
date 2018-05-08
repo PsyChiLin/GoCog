@@ -31,8 +31,13 @@ RSTdata$Both_RT <- RSTdata$Both_RT/1000
 head(RSTdata)
 
 Overall <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj,FUN = mean)
-summary(lm.beta(lm(Both_Acc~Total,data = Overall)))
-summary(lm.beta(lm(Both_RT~Total,data = Overall)))
+# summary(lm.beta(lm(Both_Acc~Total,data = Overall)))
+# summary(lm.beta(lm(Both_RT~Total,data = Overall)))
+cor.test(Overall$Both_Acc,Overall$Total) 
+# r = 0.3717782; t(22) = 1.8784; p-value = 0.07
+cor.test(Overall$Both_RT,Overall$Total)
+# r = -0.3325906; t = -1.6542, df = 22, p-value = 0.1123
+
 
 GoStage <- aggregate(data = RSTdata, cbind(Both_Acc,Both_RT,Total)~Subj+GoStage,FUN = mean)
 Opne <- filter(GoStage, GoStage == "Open")
@@ -72,6 +77,8 @@ Calc <- filter(CogTask, CogTask == "Calc")
 # summary(lm(Both_Acc~Verbal,data =Reas)) #  0.0106 * 
 # summary(lm(Both_Acc~Nonverbal,data =Reas)) # 3e-04 ***
 summary(lm.beta(lm(Total~Both_Acc,data =Reas))) # 0.000438 ***
+cor.test(Reas$Both_Acc,Reas$Total) # r = 0.6609883 t = 4.1316, df = 22, p-value = 0.0004375
+
 # summary(lm(Both_RT~Verbal,data =Reas))
 # summary(lm(Both_RT~Nonverbal,data =Reas))
 # summary(lm(Both_RT~Total,data =Reas))
@@ -118,6 +125,8 @@ summary(lm(Both_RT~Total,data = SpatOpen))
 #summary(lm(Both_Acc~Total,data = ReasOpen)) # 0.00131 ** 
 ##
 summary(lm.beta(lm(Total~Both_Acc,data = ReasOpen)))
+cor.test(ReasOpen$Both_Acc,ReasOpen$Total)
+# r = 0.6172333 t = 3.6797, df = 22, p-value = 0.001313
 ##
 #summary(lm(Both_RT~Verbal,data = ReasOpen))
 #summary(lm(Both_RT~Nonverbal,data = ReasOpen))
@@ -149,6 +158,8 @@ summary(lm(Total~Both_RT,data = SpatMid)) # 0.0379 *
 #summary(lm(Both_Acc~Nonverbal,data = ReasMid)) #0.0176 * 
 #
 summary(lm.beta(lm(Total~Both_Acc,data = ReasMid))) #  0.041 *   
+cor.test(ReasMid$Total,ReasMid$Both_Acc)
+# r = 0.420; t = 2.1712, df = 22, p-value = 0.04098
 #
 #summary(lm(Both_RT~Verbal,data = ReasMid))
 #summary(lm(Both_RT~Nonverbal,data = ReasMid))
@@ -180,6 +191,8 @@ summary(lm(Both_RT~Total,data = SpatEnd))
 #summary(lm(Both_Acc~Nonverbal,data = ReasEnd)) # 0.0135 * 
 #
 summary(lm.beta(lm(Total~Both_Acc,data = ReasEnd))) # 0.00287 **    
+cor.test(ReasEnd$Total, ReasEnd$Both_Acc)
+# r = 0.581725 t = 3.3545, df = 22, p-value = 0.002866
 #
 #summary(lm(Both_RT~Verbal,data = ReasEnd))
 #summary(lm(Both_RT~Nonverbal,data = ReasEnd))
