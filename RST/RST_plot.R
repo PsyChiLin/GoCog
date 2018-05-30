@@ -60,10 +60,10 @@ OACC <- ggplot(data= Overall, aes(x = Both_Acc, y = Total)) +
   stat_smooth(method = "lm", se = T, col = "grey")+
   annotate("text", x = 21, y = 90, label = "r", hjust = 0,fontface = "italic")+
   annotate("text", x = 25, y = 90, label = "=", hjust = 0,size = 3)+
-  annotate("text", x = 29, y = 90, label = "0.371",hjust = 0)+
+  annotate("text", x = 29, y = 90, label = ".372",hjust = 0)+
   annotate("text", x = 21, y = 85, label = "p",fontface = "italic", hjust = 0)+
   annotate("text", x = 25, y = 85, label = "=",hjust = 0,size = 3)+
-  annotate("text", x = 29, y = 85, label = "0.07", hjust = 0)+
+  annotate("text", x = 29, y = 85, label = ".07", hjust = 0)+
   #ggtitle(paste0("(A) 整體正確率"))+
   xlab("整體正確率(%)")+
   xlim(15,90)+
@@ -77,10 +77,10 @@ OACC_yx <- ggplot(data= Overall, aes(x = Total, y = Both_Acc)) +
   stat_smooth(method = "lm", se = T, col = "grey")+
   annotate("text", x = 30, y = 90, label = "r", hjust = 0,fontface = "italic")+
   annotate("text", x = 34, y = 90, label = "=", hjust = 0,size = 3)+
-  annotate("text", x = 38, y = 90, label = "0.371",hjust = 0)+
+  annotate("text", x = 38, y = 90, label = ".372",hjust = 0)+
   annotate("text", x = 30, y = 85, label = "p",fontface = "italic", hjust = 0)+
   annotate("text", x = 34, y = 85, label = "=",hjust = 0,size = 3)+
-  annotate("text", x = 38, y = 85, label = "0.07", hjust = 0)+
+  annotate("text", x = 38, y = 85, label = ".07", hjust = 0)+
   #ggtitle(paste0("(A) 整體正確率"))+
   ylab("整\n體\n正\n確\n率\n(%)")+
   xlim(30,105)+
@@ -120,10 +120,10 @@ overallACC <- ggplot(data= Reas2, aes(x = Both_Acc, y = Total)) +
   xlab("推理干擾情況下正確率(%)")+
   annotate("text", x = 21, y = 90, label = "r", hjust = 0,fontface = "italic")+
   annotate("text", x = 25, y = 90, label = "=", hjust = 0,size = 3)+
-  annotate("text", x = 29, y = 90, label = "0.661",hjust = 0)+
+  annotate("text", x = 29, y = 90, label = ".661",hjust = 0)+
   annotate("text", x = 21, y = 85, label = "p",fontface = "italic", hjust = 0)+
   annotate("text", x = 25, y = 85, label = "<",hjust = 0,size = 3)+
-  annotate("text", x = 29, y = 85, label = "0.001", hjust = 0)+
+  annotate("text", x = 29, y = 85, label = ".001", hjust = 0)+
   ylab(" ")
 
 overallACC_yx <- ggplot(data= Reas2, aes(x = Total,y = Both_Acc)) +
@@ -139,10 +139,10 @@ overallACC_yx <- ggplot(data= Reas2, aes(x = Total,y = Both_Acc)) +
   ylab("推\n理\n干\n擾\n情\n況\n下\n正\n確\n率\n(%)")+
   annotate("text", x = 30, y = 90, label = "r", hjust = 0,fontface = "italic")+
   annotate("text", x = 34, y = 90, label = "=", hjust = 0,size = 3)+
-  annotate("text", x = 38, y = 90, label = "0.661",hjust = 0)+
+  annotate("text", x = 38, y = 90, label = ".661",hjust = 0)+
   annotate("text", x = 30, y = 85, label = "p",fontface = "italic", hjust = 0)+
   annotate("text", x = 34, y = 85, label = "<",hjust = 0,size = 3)+
-  annotate("text", x = 38, y = 85, label = "0.001", hjust = 0)
+  annotate("text", x = 38, y = 85, label = ".001", hjust = 0)
 
   #ylab("推\n理\n思\n考\n測\n驗\n總\n分")#+
 #xlim(0,100)
