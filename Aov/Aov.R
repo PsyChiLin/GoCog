@@ -2,7 +2,9 @@ library(afex)
 library(dplyr)
 library(reshape2)
 ## Read Data
-#GoCog<-read.csv("../GoCogdata/GoCog.csv", h=T)
+GoCog<-read.csv("../GoCogdata/GoCog.csv", h=T)
+Go <- aggregate(cbind(Cog_ACC,Cog_RT)~CogTask, data = GoCog, FUN = mean)
+
 GoCog<-read.csv("../GoCogdata/GoCog_20180404.csv", h=T)[,1:7]
 GoCog$Subj<-as.factor(GoCog$Subj)
 colnames(GoCog)[6] <- "Both_ACC"
@@ -12,6 +14,8 @@ GoCog$Both_RT <- GoCog$Both_RT/1000
 GoCog$Both_ACC <- GoCog$Both_ACC*100
 GoCog$GoStage <- factor(GoCog$GoStage, levels=c("Open", "Mid", "End"))
 GoCog$CogTask<- factor(GoCog$CogTask, levels=c("None", "Spat", "Reas", "Calc"))
+Go <- aggregate(cbind(Both_ACC,Both_RT)~Subj , data = GoCog, FUN = mean)
+
 
 ########################### Open vs End ###########################
 # agg <- aggregate(cbind(Both_ACC,Both_RT)~GoStage+Subj, data = GoCog, FUN = mean)
